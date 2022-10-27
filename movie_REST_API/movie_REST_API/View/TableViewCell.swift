@@ -135,13 +135,6 @@ class TableViewCell: UITableViewCell {
                      overview: movie.overview,
                      poster: movie.posterImage,
                      id: movie.id)
-            actors.completion  = { num in
-
-                print(num, movie.id ?? "ниче")
-            }
-            
-            actors.id = movie.id
-            print("Мой id = \(movie.id) -  \(actors.id) ")
         }
         
     private func updateUI(title: String?,
@@ -176,7 +169,7 @@ class TableViewCell: UITableViewCell {
         
         // MARK: - Get image data
         private func getImageDataFrom(url: URL) {
-            URLSession.shared.dataTask(with: url) { data, res, error in
+            URLSession.shared.dataTask(with: url) { data, _, error in
 
                 if let error = error {
                     print("DataTask error: \(error.localizedDescription)")

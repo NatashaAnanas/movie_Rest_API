@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Главная страница с фильмами
+/// Получение данных о фильмах
 class MovieViewModel {
     
     private var apiService = ApiService()
