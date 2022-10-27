@@ -1,29 +1,26 @@
-//
-//  Model.swift
-//  movie_REST_API
-//
-//  Created by Анастасия Козлова on 27.10.2022.
-//
+// MoviesData.swift
+// Copyright © RoadMap. All rights reserved.
 
 import Foundation
 
-/// Moдель фильмы
+/// Moдель массив фильмов
 struct MoviesData: Decodable {
     let movies: [Movie]
-    
+
     private enum CodingKeys: String, CodingKey {
         case movies = "results"
     }
 }
+
+/// Moдель фильмы
 struct Movie: Decodable {
-    
     let id: Int?
     let title: String?
     let year: String?
     let rate: Double?
     let posterImage: String?
     let overview: String?
-    
+
     private enum CodingKeys: String, CodingKey {
         case id, title, overview
         case year = "release_date"
