@@ -18,6 +18,7 @@
 		4111534D290A9C9200ED22EA /* MoviesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4111534C290A9C9200ED22EA /* MoviesData.swift */; };
 		4111534F290A9D2C00ED22EA /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4111534E290A9D2C00ED22EA /* ApiService.swift */; };
 		41115352290A9DC500ED22EA /* MovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41115351290A9DC500ED22EA /* MovieViewModel.swift */; };
+		41115354290AD69600ED22EA /* ActorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41115353290AD69600ED22EA /* ActorModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		4111534C290A9C9200ED22EA /* MoviesData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesData.swift; sourceTree = "<group>"; };
 		4111534E290A9D2C00ED22EA /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		41115351290A9DC500ED22EA /* MovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewModel.swift; sourceTree = "<group>"; };
+		41115353290AD69600ED22EA /* ActorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				4111534C290A9C9200ED22EA /* MoviesData.swift */,
+				41115353290AD69600ED22EA /* ActorModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -129,11 +132,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4111533B29080ECB00ED22EA /* Build configuration list for PBXNativeTarget "movie_REST_API" */;
 			buildPhases = (
+				4111533F2908108200ED22EA /* SwiftLint */,
 				4111532329080EC400ED22EA /* Sources */,
 				4111532429080EC400ED22EA /* Frameworks */,
 				4111532529080EC400ED22EA /* Resources */,
 				4111533E2908104000ED22EA /* SwiftFormat */,
-				4111533F2908108200ED22EA /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -237,6 +240,7 @@
 				41115349290A9BE100ED22EA /* TableViewCell.swift in Sources */,
 				41115346290A9B1000ED22EA /* SecondViewController.swift in Sources */,
 				4111532F29080EC400ED22EA /* MovieViewController.swift in Sources */,
+				41115354290AD69600ED22EA /* ActorModel.swift in Sources */,
 				4111534D290A9C9200ED22EA /* MoviesData.swift in Sources */,
 				41115352290A9DC500ED22EA /* MovieViewModel.swift in Sources */,
 				4111534F290A9D2C00ED22EA /* ApiService.swift in Sources */,

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Moдель фильмы
 struct MoviesData: Decodable {
     let movies: [Movie]
     
@@ -14,7 +15,6 @@ struct MoviesData: Decodable {
         case movies = "results"
     }
 }
-
 struct Movie: Decodable {
     
     let id: Int?
@@ -29,23 +29,5 @@ struct Movie: Decodable {
         case year = "release_date"
         case rate = "vote_average"
         case posterImage = "poster_path"
-    }
-}
-
-struct ActorData: Decodable {
-    let actor: [Actor]
-    
-    private enum CodingKeys: String, CodingKey {
-        case actor = "cast"
-    }
-}
-struct Actor: Decodable {
-    
-    let name: String?
-    let actorImage: String?
-    
-    private enum CodingKeys: String, CodingKey {
-        case name
-        case actorImage = "profile_path"
     }
 }

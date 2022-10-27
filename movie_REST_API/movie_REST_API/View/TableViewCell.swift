@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Ячейка с фильмом
 class TableViewCell: UITableViewCell {
     
     let actors = ActorViewModel()
@@ -56,8 +57,6 @@ class TableViewCell: UITableViewCell {
     }()
     
     private var urlString: String = ""
-    
-//    var completion: ((Int?) -> ())?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -130,7 +129,12 @@ class TableViewCell: UITableViewCell {
     }
 
         func setCellWithValues(_ movie: Movie) {
-            updateUI(title: movie.title, releaseDate: movie.year, rating: movie.rate, overview: movie.overview, poster: movie.posterImage, id: movie.id)
+            updateUI(title: movie.title,
+                     releaseDate: movie.year,
+                     rating: movie.rate,
+                     overview: movie.overview,
+                     poster: movie.posterImage,
+                     id: movie.id)
             actors.completion  = { num in
 
                 print(num, movie.id ?? "ниче")
@@ -140,10 +144,14 @@ class TableViewCell: UITableViewCell {
             print("Мой id = \(movie.id) -  \(actors.id) ")
         }
         
-    private func updateUI(title: String?, releaseDate: String?, rating: Double?, overview: String?, poster: String?, id: Int?) {
+    private func updateUI(title: String?,
+                          releaseDate: String?,
+                          rating: Double?,
+                          overview: String?,
+                          poster: String?,
+                          id: Int?) {
             
         nameMovieLabel.text = title
-        print(title)
         descpriptionMovieTextView.text = overview
 //        guard let movieId = id else { return }
 //        print("Мой id = \(movieId)")
@@ -168,7 +176,7 @@ class TableViewCell: UITableViewCell {
         
         // MARK: - Get image data
         private func getImageDataFrom(url: URL) {
-            URLSession.shared.dataTask(with: url) { (data, response, error) in
+            URLSession.shared.dataTask(with: url) { data, res, error in
 
                 if let error = error {
                     print("DataTask error: \(error.localizedDescription)")

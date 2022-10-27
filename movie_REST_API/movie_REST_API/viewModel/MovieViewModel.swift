@@ -7,16 +7,17 @@
 
 import Foundation
 
+/// Главная страница с фильмами
 class MovieViewModel {
     
     private var apiService = ApiService()
-    private var popularMovies = [Movie]()
+    private var popularMovies: [Movie] = []
     var urlMovie = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
     
     func fetchPopularMoviesData(completion: @escaping () -> ()) {
-
+        
         print(urlMovie)
-        apiService.getMoviesData(moviesURL: urlMovie) { [weak self] (result) in
+        apiService.getMoviesData(moviesURL: urlMovie) { [weak self] result in
             
             switch result {
             case .success(let listOf):
@@ -40,4 +41,3 @@ class MovieViewModel {
         return popularMovies[indexPath.row]
     }
 }
-

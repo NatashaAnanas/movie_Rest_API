@@ -46,8 +46,6 @@ class ViewController: UIViewController {
     
     private var viewModel = MovieViewModel()
     private var secondViewModel = ActorViewModel()
-    
-    var completion: ((Int) -> ())?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,14 +69,12 @@ class ViewController: UIViewController {
         switch sender.tag {
         case 0:
             let url = "https://api.themoviedb.org/3/movie/top_rated?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
-                    
-            
+                
             viewModel.urlMovie = url
             loadPopularMoviesData()
             
         case 1:
             let url = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
-            
             
 //        https://api.themoviedb.org/3/movie/436270/credits?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US
             
@@ -141,13 +137,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.filmIdentifier,
-                                                 for: indexPath) as! TableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.filmIdentifier,
+        for: indexPath) as? TableViewCell else { return UITableViewCell() }
         
         let movie = viewModel.cellForRowAt(indexPath: indexPath)
-        print("IDDDDDDDD = \(movie.id)")
         cell.setCellWithValues(movie)
-        print("ID = \(movie.id)")
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: UIScreen.main.bounds.width)
         cell.selectionStyle = .none
         

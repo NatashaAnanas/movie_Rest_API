@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Страница выбранного фильма
 class SecondViewController: UIViewController {
     
     private enum Constant {
@@ -53,11 +54,13 @@ class SecondViewController: UIViewController {
     }
     
     private func createUI() {
-        print("Это побера УРАААААА = \(idNew)")
         view.backgroundColor = .black
         navigationItem.title = "Hello"
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .done, target: self, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"),
+                                                            style: .done,
+                                                            target: self,
+                                                            action: nil)
         
         view.addSubview(movieImageView)
         view.addSubview(descpriptionTextView)
@@ -113,13 +116,17 @@ class SecondViewController: UIViewController {
     }
 }
 
-extension SecondViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension SecondViewController: UICollectionViewDelegate,
+                                UICollectionViewDataSource,
+                                UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return secondViewModel.numberOfRowsInSection(section: section)
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellIdentifier, for: indexPath) as? SecondCell else { return UICollectionViewCell() }
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellIdentifier,
+        for: indexPath) as? SecondCell else { return UICollectionViewCell() }
         
         let actor = secondViewModel.cellForRowAt(indexPath: indexPath)
         cell.setCellWithValues(actor)
@@ -127,7 +134,9 @@ extension SecondViewController: UICollectionViewDelegate, UICollectionViewDataSo
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 200, height: 280)
     }
 }
