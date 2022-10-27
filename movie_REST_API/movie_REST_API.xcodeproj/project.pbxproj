@@ -16,6 +16,7 @@
 		41115346290A9B1000ED22EA /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41115345290A9B1000ED22EA /* SecondViewController.swift */; };
 		41115349290A9BE100ED22EA /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41115348290A9BE100ED22EA /* TableViewCell.swift */; };
 		4111534D290A9C9200ED22EA /* MoviesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4111534C290A9C9200ED22EA /* MoviesData.swift */; };
+		4111534F290A9D2C00ED22EA /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4111534E290A9D2C00ED22EA /* ApiService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		41115345290A9B1000ED22EA /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		41115348290A9BE100ED22EA /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		4111534C290A9C9200ED22EA /* MoviesData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesData.swift; sourceTree = "<group>"; };
+		4111534E290A9D2C00ED22EA /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 		4111534B290A9C8100ED22EA /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				4111534E290A9D2C00ED22EA /* ApiService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				41115346290A9B1000ED22EA /* SecondViewController.swift in Sources */,
 				4111532F29080EC400ED22EA /* MovieViewController.swift in Sources */,
 				4111534D290A9C9200ED22EA /* MoviesData.swift in Sources */,
+				4111534F290A9D2C00ED22EA /* ApiService.swift in Sources */,
 				4111532B29080EC400ED22EA /* AppDelegate.swift in Sources */,
 				4111532D29080EC400ED22EA /* SceneDelegate.swift in Sources */,
 			);
