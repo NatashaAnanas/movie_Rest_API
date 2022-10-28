@@ -86,8 +86,8 @@ final class MovieViewController: UIViewController {
         return tableView
     }()
     
+    // MARK: - Private Properties
     private var isPress = true
-
     private var viewModel = MovieViewModel()
     private var secondViewModel = ActorViewModel()
 
@@ -97,18 +97,12 @@ final class MovieViewController: UIViewController {
         createUI()
         createTableView()
         action()
-
-        setConstraintTableView()
-        setConstraintButtons()
-        setConstraintImage()
-        setConstraintNewButton()
-
+        setConstraint()
         loadPopularMoviesData()
     }
 
     // MARK: - Private Method
     private func action() {
-        title = Constant.film
         popularButton.addTarget(self, action: #selector(buttonAction(sender:)), for: .touchUpInside)
         rateButton.addTarget(self, action: #selector(buttonAction(sender:)), for: .touchUpInside)
     }
@@ -149,6 +143,7 @@ final class MovieViewController: UIViewController {
     }
     
     private func createUI() {
+        title = Constant.film
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:
                                                                     UIColor.black]
         
@@ -167,6 +162,13 @@ final class MovieViewController: UIViewController {
     private func createTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    private func setConstraint() {
+        setConstraintTableView()
+        setConstraintButtons()
+        setConstraintImage()
+        setConstraintNewButton()
     }
 
     private func setConstraintTableView() {

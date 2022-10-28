@@ -23,12 +23,7 @@ final class WKWebViewController: UIViewController {
     
     // MARK: - Private Visual Components
     
-    private var apiService = ApiService()
-    private var homePage: HomaPageData?
-
-    // MARK: - Visual Components
-    
-    let wkWebView = WKWebView()
+    private let wkWebView = WKWebView()
     
     private let loadProgressView: UIProgressView = {
         let progress = UIProgressView()
@@ -46,10 +41,13 @@ final class WKWebViewController: UIViewController {
     
     private lazy var activityViewController = UIActivityViewController(activityItems: ["\(self.url)"],
                                                                        applicationActivities: nil)
+    // MARK: - Private Properties
     private var loadingTimer: Timer?
+    private var apiService = ApiService()
+    private var homePage: HomaPageData?
+    private var url = String()
     
     // MARK: - Public Properties
-    var url = String()
     var id: Int?
     
     // MARK: - Life cycle
@@ -62,6 +60,25 @@ final class WKWebViewController: UIViewController {
     }
     
     // MARK: - Private Method
+    private func fetchHomePageData(id: Int?, completion: @escaping () -> ()) {
+        
+        guard let idMovie = id else { return }
+    
+        let urlPage = Constant.firstPartURL + String(idMovie) + Constant.secondPartURL
+        url = urlPage
+        apiService.getHomePageData(moviesURL: urlPage) { result in
+
+            switch result {
+            case let .success(listOf):
+                guard let list = listOf else { return }
+                guard let list = list.homepage else { return }
+                self.getURL(url: list)
+                completion()
+            case let .failure(error):
+                print(Constant.error, error)
+            }
+        }
+    }
     
     private func getURL(url: String) {
         guard let myURL = URL(string: url) else { return }
@@ -110,27 +127,6 @@ final class WKWebViewController: UIViewController {
                                              selector: #selector(loadProgressAction),
                                              userInfo: nil,
                                              repeats: true)
-    }
-    
-    func fetchHomePageData(id: Int?, completion: @escaping () -> ()) {
-        
-        guard let idMovie = id else { return }
-    
-        print(idMovie)
-        let urlPage = Constant.firstPartURL + String(idMovie) + Constant.secondPartURL
-        print(urlPage)
-        apiService.getHomePageData(moviesURL: urlPage) { result in
-
-            switch result {
-            case let .success(listOf):
-                guard let list = listOf else { return }
-                guard let list = list.homepage else { return }
-                self.getURL(url: list)
-                completion()
-            case let .failure(error):
-                print(Constant.error, error)
-            }
-        }
     }
     
     private func addConstraints() {

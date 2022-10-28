@@ -162,10 +162,10 @@ final class MovieViewCell: UITableViewCell {
         let urlString = Constant.firstPartURL + imageString
         
         guard let imageURL = URL(string: urlString) else { return }
-        getImageDataFrom(url: imageURL)
+        getImageData(url: imageURL)
     }
     
-    private func getImageDataFrom(url: URL) {
+    private func getImageData(url: URL) {
         URLSession.shared.dataTask(with: url) { data, _, error in
             
             if let error = error {

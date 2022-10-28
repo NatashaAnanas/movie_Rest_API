@@ -13,6 +13,7 @@ final class ActorViewModel {
         static let error = "Error processing json data: "
     }
     
+    // MARK: - Private Properties
     private let apiService = ApiService()
     private var actors: [Actor] = []
 
