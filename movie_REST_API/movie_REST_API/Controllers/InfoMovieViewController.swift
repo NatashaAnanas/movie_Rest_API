@@ -6,6 +6,7 @@ import UIKit
 /// Страница выбранного фильма
 final class InfoMovieViewController: UIViewController {
     
+    // MARK: - Private Constant
     private enum Constant {
         static let cellIdentifier = "cell"
         static let errorDataTask = "DataTask error: "
@@ -20,6 +21,7 @@ final class InfoMovieViewController: UIViewController {
         static let watchText = "Смотреть"
     }
     
+    // MARK: - Private Visual Components
     private let imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -79,6 +81,7 @@ final class InfoMovieViewController: UIViewController {
 
     var idNew: Int?
 
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         createUI()
@@ -88,6 +91,7 @@ final class InfoMovieViewController: UIViewController {
         loadPopularMoviesData()
     }
     
+    // MARK: - Private Method
     private func action() {
         goToWebButton.addTarget(self, action: #selector(goToWebButtonAction(sender: )), for: .touchUpInside)
     }
@@ -228,8 +232,6 @@ final class InfoMovieViewController: UIViewController {
         let wkWebVC = WKWebViewController()
         wkWebVC.id = idNew
         navigationController?.pushViewController(wkWebVC, animated: true)
-//        navigationController?.modalPresentationStyle = .formSheet
-//        present(wkWebVC, animated: true)
     }
 }
 

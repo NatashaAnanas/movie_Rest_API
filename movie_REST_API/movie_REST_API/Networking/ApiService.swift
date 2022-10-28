@@ -3,9 +3,10 @@
 
 import Foundation
 
-/// Get Data
-class ApiService {
+/// Get Data - сетевой слой
+final class ApiService {
     
+    // MARK: - Private Constant
     private enum Constant {
         static let errorDataTask = "DataTask error: "
         static let emptyResponse = "Empty Response"
@@ -13,8 +14,10 @@ class ApiService {
         static let emptyData = "Empty Data"
     }
     
+    // MARK: - Private Properties
     private var dataTask: URLSessionDataTask?
     
+    // MARK: - Public Methods
     func getMoviesData(moviesURL: String, completion: @escaping (Result<MoviesData?, Error>) -> ()) {
         getData(url: moviesURL, completion: completion)
     }
@@ -27,7 +30,8 @@ class ApiService {
         getData(url: moviesURL, completion: completion)
     }
     
-    func getData<T: Decodable>(url: String, completion: @escaping (Result<T?, Error>) -> ()) {
+    // MARK: - Private Methods
+    private func getData<T: Decodable>(url: String, completion: @escaping (Result<T?, Error>) -> ()) {
         guard let url = URL(string: url) else { return }
         
         dataTask = URLSession.shared.dataTask(with: url) { data, response, error in

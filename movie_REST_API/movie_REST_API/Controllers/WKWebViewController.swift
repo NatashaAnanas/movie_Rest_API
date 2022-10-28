@@ -12,7 +12,7 @@ import WebKit
 /// Информация о фильме из сети
 final class WKWebViewController: UIViewController {
     
-    // MARK: - Conctant
+    // MARK: - Private Constant
     private enum Constant {
         static let back = "chevron.left"
         static let forward = "chevron.forward"
@@ -21,7 +21,8 @@ final class WKWebViewController: UIViewController {
         static let error = "Error processing json data: "
     }
     
-//    private let homePageViewModel = HomePageViewModel()
+    // MARK: - Private Visual Components
+    
     private var apiService = ApiService()
     private var homePage: HomaPageData?
 
@@ -29,7 +30,7 @@ final class WKWebViewController: UIViewController {
     
     let wkWebView = WKWebView()
     
-    let loadProgressView: UIProgressView = {
+    private let loadProgressView: UIProgressView = {
         let progress = UIProgressView()
         progress.progressTintColor = .systemBlue
         progress.tintColor = .tertiaryLabel

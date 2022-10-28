@@ -6,6 +6,7 @@ import UIKit
 /// Ячейк с фотографиями актеров
 final class InfoMovieCell: UICollectionViewCell {
     
+    // MARK: - Private Constant
     private enum Constant {
         static let fatalError = "init(coder:) has not been implemented"
         static let firstPartURL =  "https://image.tmdb.org/t/p/w500"
@@ -13,6 +14,7 @@ final class InfoMovieCell: UICollectionViewCell {
         static let emptyData = "Empty Data"
     }
     
+    // MARK: - Private Visual Components
     private let personImageView: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 15
@@ -46,6 +48,7 @@ final class InfoMovieCell: UICollectionViewCell {
         fatalError(Constant.fatalError)
     }
     
+    // MARK: - Private Method
     private func setConstraintsImage() {
         NSLayoutConstraint.activate([
             personImageView.topAnchor.constraint(equalTo: topAnchor, constant: 40),

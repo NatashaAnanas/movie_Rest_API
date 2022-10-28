@@ -6,17 +6,31 @@ import UIKit
 /// Главная страница c фильмами
 final class MovieViewController: UIViewController {
     
+    // MARK: - Private Constant
     private enum Constant {
         static let filmIdentifier = "film"
         static let allFilm = "Все фильмы"
         static let popularFilm = "Популярное"
         static let film = "Фильмы"
         static let urlAllFilm = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
-//    https://api.themoviedb.org/3/movie/popular/238?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1
         static let urlPopularFilm = "https://api.themoviedb.org/3/movie/top_rated?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
         static let baseImage = "фон4"
         static let baseImageFilm = "film"
+        static let newFilm = "Новинки"
     }
+    
+    // MARK: - Private Visual Components
+    private let newButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .systemGreen
+        button.setTitle(Constant.newFilm, for: .normal)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        button.layer.cornerRadius = 15
+        button.clipsToBounds = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     private let baseImageView: UIImageView = {
         let image = UIImageView()
@@ -37,7 +51,7 @@ final class MovieViewController: UIViewController {
         button.layer.shadowRadius = 9.0
         button.layer.shadowOpacity = 0.8
         button.layer.shadowOffset = CGSize(width: 2.5, height: 2.5)
-//        button.clipsToBounds = true
+
         button.backgroundColor = .systemBlue
         button.setTitle(Constant.allFilm, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
@@ -54,7 +68,6 @@ final class MovieViewController: UIViewController {
         button.layer.shadowRadius = 9.0
         button.layer.shadowOpacity = 0.8
         button.layer.shadowOffset = CGSize(width: 2.5, height: 2.5)
-//        button.clipsToBounds = true
         button.backgroundColor = .systemCyan
         button.setTitle(Constant.popularFilm, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
@@ -78,6 +91,7 @@ final class MovieViewController: UIViewController {
     private var viewModel = MovieViewModel()
     private var secondViewModel = ActorViewModel()
 
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         createUI()
@@ -87,10 +101,12 @@ final class MovieViewController: UIViewController {
         setConstraintTableView()
         setConstraintButtons()
         setConstraintImage()
+        setConstraintNewButton()
 
         loadPopularMoviesData()
     }
 
+    // MARK: - Private Method
     private func action() {
         title = Constant.film
         popularButton.addTarget(self, action: #selector(buttonAction(sender:)), for: .touchUpInside)
@@ -133,10 +149,8 @@ final class MovieViewController: UIViewController {
     }
     
     private func createUI() {
-//        navigationController?.navigationBar.backgroundColor = .black
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:
                                                                     UIColor.black]
-//        navigationController?.navigationBar.barStyle = .black
         
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(named: Constant.baseImage)
@@ -147,6 +161,7 @@ final class MovieViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(popularButton)
         view.addSubview(rateButton)
+        view.addSubview(newButton)
     }
 
     private func createTableView() {
@@ -156,7 +171,7 @@ final class MovieViewController: UIViewController {
 
     private func setConstraintTableView() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: popularButton.bottomAnchor, constant: 10),
+            tableView.topAnchor.constraint(equalTo: baseImageView.bottomAnchor, constant: 5),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
@@ -166,14 +181,14 @@ final class MovieViewController: UIViewController {
     private func setConstraintButtons() {
         NSLayoutConstraint.activate([
             popularButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 90),
-            popularButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            popularButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             popularButton.widthAnchor.constraint(equalToConstant: 150),
             popularButton.heightAnchor.constraint(equalToConstant: 40),
         ])
 
         NSLayoutConstraint.activate([
             rateButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 90),
-            rateButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            rateButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             rateButton.widthAnchor.constraint(equalToConstant: 150),
             rateButton.heightAnchor.constraint(equalToConstant: 40),
         ])
@@ -187,6 +202,16 @@ final class MovieViewController: UIViewController {
             baseImageView.heightAnchor.constraint(equalToConstant: 200)
             ])
     }
+    
+    private func setConstraintNewButton() {
+        NSLayoutConstraint.activate([
+            newButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 300),
+            newButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            newButton.heightAnchor.constraint(equalToConstant: 35),
+            newButton.widthAnchor.constraint(equalToConstant: 120)
+            ])
+    }
+
 }
 
 extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
@@ -216,7 +241,6 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
         secondVC.createPresentImage(image: movie.presentImage)
         secondVC.descpriptionTextView.text = movie.overview
         secondVC.nameFilmLabel.text = movie.title
-        print(movie.id)
         navigationController?.pushViewController(secondVC, animated: true)
     }
 }

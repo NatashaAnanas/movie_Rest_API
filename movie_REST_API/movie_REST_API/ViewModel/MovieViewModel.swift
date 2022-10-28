@@ -4,17 +4,19 @@
 import Foundation
 
 /// Получение данных о фильмах
-class MovieViewModel {
+final class MovieViewModel {
     
+    // MARK: - Private Constant
     private enum Constant {
-        static let urlMovie = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
+
         static let error = "Error processing json data: "
     }
     
-    private var apiService = ApiService()
+    private let apiService = ApiService()
     private var movies: [Movie] = []
     var urlMovie = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
 
+    // MARK: - Public Method
     func fetchPopularMoviesData(completion: @escaping () -> ()) {
         apiService.getMoviesData(moviesURL: urlMovie) { [weak self] result in
 

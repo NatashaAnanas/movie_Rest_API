@@ -6,6 +6,7 @@ import UIKit
 /// Ячейка с фильмом
 final class MovieViewCell: UITableViewCell {
     
+    // MARK: - Private Constant
     private enum Constant {
         static let fatalError = "init(coder:) has not been implemented"
         static let firstPartURL =  "https://image.tmdb.org/t/p/w500"
@@ -13,13 +14,13 @@ final class MovieViewCell: UITableViewCell {
         static let emptyData = "Empty Data"
     }
     
+    // MARK: - Private Visual Components
     private let movieImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
-        
+        imageView.layer.cornerRadius = 20
         return imageView
     }()
     
@@ -67,6 +68,19 @@ final class MovieViewCell: UITableViewCell {
         fatalError(Constant.fatalError)
     }
     
+    // MARK: - Public Methods
+    func setCellWithValues(_ movie: Movie) {
+        updateUI(
+            title: movie.title,
+            releaseDate: movie.year,
+            rating: movie.rate,
+            overview: movie.overview,
+            poster: movie.posterImage,
+            id: movie.id,
+            posterImage: movie.presentImage)
+    }
+    
+    // MARK: - Private Methods
     private func createUI() {
         backgroundColor = .black
         addSubview(movieImageView)
@@ -117,17 +131,6 @@ final class MovieViewCell: UITableViewCell {
             rateLabel.widthAnchor.constraint(equalToConstant: 36),
             rateLabel.heightAnchor.constraint(equalTo: rateLabel.widthAnchor)
         ])
-    }
-    
-    func setCellWithValues(_ movie: Movie) {
-        updateUI(
-            title: movie.title,
-            releaseDate: movie.year,
-            rating: movie.rate,
-            overview: movie.overview,
-            poster: movie.posterImage,
-            id: movie.id,
-            posterImage: movie.presentImage)
     }
     
     private func updateUI(
