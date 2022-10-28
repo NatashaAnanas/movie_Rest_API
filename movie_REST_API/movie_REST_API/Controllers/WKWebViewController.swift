@@ -14,8 +14,8 @@ final class WKWebViewController: UIViewController {
     
     // MARK: - Private Constant
     private enum Constant {
-        static let back = "chevron.left"
-        static let forward = "chevron.forward"
+        static let backName = "chevron.left"
+        static let forwardName = "chevron.forward"
         static let firstPartURL = "https://api.themoviedb.org/3/movie/"
         static let secondPartURL = "?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
         static let error = "Error processing json data: "
@@ -88,11 +88,11 @@ final class WKWebViewController: UIViewController {
     
     private func createBarButtonItem() {
         
-        let backButtonItem = UIBarButtonItem(image: UIImage(systemName: Constant.back),
+        let backButtonItem = UIBarButtonItem(image: UIImage(systemName: Constant.backName),
                                              style: .done,
                                              target: self,
                                              action: #selector(backButtonItemAction))
-        let forwardButtonItem = UIBarButtonItem(image: UIImage(systemName: Constant.forward),
+        let forwardButtonItem = UIBarButtonItem(image: UIImage(systemName: Constant.forwardName),
                                                 style: .done,
                                                 target: self,
                                                 action: #selector(forwardButtonItemAction))

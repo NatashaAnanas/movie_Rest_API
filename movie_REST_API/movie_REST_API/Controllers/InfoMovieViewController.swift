@@ -15,9 +15,9 @@ final class InfoMovieViewController: UIViewController {
         static let starImageName = "star"
         static let starFillImageName = "star.fill"
         static let emptyString = ""
-        static let addFavourite = "Фильм добавлен в избранное"
-        static let deleteFavourite = "Фильм удален из избранного"
-        static let baseImage = "фон5"
+        static let addFavouriteText = "Фильм добавлен в избранное"
+        static let deleteFavouriteText = "Фильм удален из избранного"
+        static let baseImageName = "фон5"
         static let watchText = "Смотреть"
     }
     
@@ -148,7 +148,7 @@ final class InfoMovieViewController: UIViewController {
         navigationController?.navigationBar.tintColor = UIColor.black
         
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: Constant.baseImage)
+        backgroundImage.image = UIImage(named: Constant.baseImageName)
         backgroundImage.contentMode = .scaleAspectFill
         view.insertSubview(backgroundImage, at: 0)
         
@@ -160,11 +160,11 @@ final class InfoMovieViewController: UIViewController {
     
     @objc private func starAction() {
         if isPress == false {
-            tapOkButton(title: Constant.addFavourite, message: Constant.emptyString, handler: nil)
+            tapOkButton(title: Constant.addFavouriteText, message: Constant.emptyString, handler: nil)
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: Constant.starFillImageName)
             isPress = true
         } else {
-            tapOkButton(title: Constant.deleteFavourite, message: Constant.emptyString, handler: nil)
+            tapOkButton(title: Constant.deleteFavouriteText, message: Constant.emptyString, handler: nil)
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: Constant.starImageName)
             isPress = false
         }

@@ -9,21 +9,21 @@ final class MovieViewController: UIViewController {
     // MARK: - Private Constant
     private enum Constant {
         static let filmIdentifier = "film"
-        static let allFilm = "Все фильмы"
-        static let popularFilm = "Популярное"
-        static let film = "Фильмы"
+        static let allFilmText = "Все фильмы"
+        static let popularFilmText = "Популярное"
+        static let filmsText = "Фильмы"
         static let urlAllFilm = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
         static let urlPopularFilm = "https://api.themoviedb.org/3/movie/top_rated?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
-        static let baseImage = "фон4"
-        static let baseImageFilm = "film"
-        static let newFilm = "Новинки"
+        static let baseImageName = "фон4"
+        static let baseImageFilmName = "film"
+        static let newFilmText = "Новинки"
     }
     
     // MARK: - Private Visual Components
     private let newButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemGreen
-        button.setTitle(Constant.newFilm, for: .normal)
+        button.setTitle(Constant.newFilmText, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button.layer.cornerRadius = 15
@@ -35,7 +35,7 @@ final class MovieViewController: UIViewController {
     private let baseImageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
-        image.image = UIImage(named: Constant.baseImageFilm)
+        image.image = UIImage(named: Constant.baseImageFilmName)
         image.layer.cornerRadius = 15
         image.clipsToBounds = true
         image.contentMode = .scaleAspectFill
@@ -53,7 +53,7 @@ final class MovieViewController: UIViewController {
         button.layer.shadowOffset = CGSize(width: 2.5, height: 2.5)
 
         button.backgroundColor = .systemBlue
-        button.setTitle(Constant.allFilm, for: .normal)
+        button.setTitle(Constant.allFilmText, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.tag = 0
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +69,7 @@ final class MovieViewController: UIViewController {
         button.layer.shadowOpacity = 0.8
         button.layer.shadowOffset = CGSize(width: 2.5, height: 2.5)
         button.backgroundColor = .systemCyan
-        button.setTitle(Constant.popularFilm, for: .normal)
+        button.setTitle(Constant.popularFilmText, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.tag = 1
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -79,7 +79,7 @@ final class MovieViewController: UIViewController {
 
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundView = UIImageView(image: UIImage(named: Constant.baseImage))
+        tableView.backgroundView = UIImageView(image: UIImage(named: Constant.baseImageName))
         tableView.register(MovieViewCell.self, forCellReuseIdentifier: Constant.filmIdentifier)
         tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -143,12 +143,12 @@ final class MovieViewController: UIViewController {
     }
     
     private func createUI() {
-        title = Constant.film
+        title = Constant.filmsText
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:
                                                                     UIColor.black]
         
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: Constant.baseImage)
+        backgroundImage.image = UIImage(named: Constant.baseImageName)
         backgroundImage.contentMode = .scaleAspectFill
         view.insertSubview(backgroundImage, at: 0)
         
