@@ -4,42 +4,46 @@
 import UIKit
 
 /// Ячейка с фильмом
-class TableViewCell: UITableViewCell {
-    let actors = ActorViewModel()
-    let secondCell = SecondCell()
-
-    let movieImageView: UIImageView = {
+final class MovieViewCell: UITableViewCell {
+    
+    private enum Constant {
+        static let fatalError = "init(coder:) has not been implemented"
+        static let firstPartURL =  "https://image.tmdb.org/t/p/w500"
+        static let errorDataTask = "DataTask error: "
+        static let emptyData = "Empty Data"
+    }
+    
+    private let movieImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .black
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
-
+        
         return imageView
     }()
-
-    let nameMovieLabel: UILabel = {
+    
+    private let nameMovieLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = .boldSystemFont(ofSize: 20)
-        label.textColor = .white
+        label.font = .boldSystemFont(ofSize: 22)
+        label.textColor = .black
         return label
     }()
-
-    let descpriptionMovieTextView: UITextView = {
+    
+    private let descpriptionMovieTextView: UITextView = {
         let text = UITextView()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = .systemFont(ofSize: 18)
-        text.backgroundColor = .black
-        text.textColor = .white
-
+        text.backgroundColor = .none
+        text.textColor = .black
+        
         return text
     }()
-
-    let rateLabel: UILabel = {
+    
+    private let rateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .boldSystemFont(ofSize: 16)
@@ -47,24 +51,22 @@ class TableViewCell: UITableViewCell {
         label.layer.cornerRadius = 18
         label.clipsToBounds = true
         label.textAlignment = .center
-
+        
         return label
     }()
-
-    private var urlString: String = ""
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+        
         createUI()
         setConstraints()
     }
-
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(Constant.fatalError)
     }
-
+    
     private func createUI() {
         backgroundColor = .black
         addSubview(movieImageView)
@@ -72,25 +74,24 @@ class TableViewCell: UITableViewCell {
         addSubview(nameMovieLabel)
         addSubview(descpriptionMovieTextView)
     }
-
+    
     private func setConstraints() {
         setConstraintImageView()
         setConstraintLabel()
         setConstraintTextView()
         setConstraintRateLabel()
     }
-
+    
     private func setConstraintImageView() {
         NSLayoutConstraint.activate([
-            movieImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            movieImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
             movieImageView.widthAnchor.constraint(equalToConstant: 190),
-
             movieImageView.heightAnchor.constraint(equalTo: movieImageView.widthAnchor, multiplier: 5 / 3),
             movieImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
             movieImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10)
         ])
     }
-
+    
     private func setConstraintLabel() {
         NSLayoutConstraint.activate([
             nameMovieLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
@@ -99,7 +100,7 @@ class TableViewCell: UITableViewCell {
             nameMovieLabel.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
-
+    
     private func setConstraintTextView() {
         NSLayoutConstraint.activate([
             descpriptionMovieTextView.topAnchor.constraint(equalTo: nameMovieLabel.bottomAnchor, constant: 5),
@@ -108,7 +109,7 @@ class TableViewCell: UITableViewCell {
             descpriptionMovieTextView.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
-
+    
     private func setConstraintRateLabel() {
         NSLayoutConstraint.activate([
             rateLabel.trailingAnchor.constraint(equalTo: movieImageView.trailingAnchor, constant: -3),
@@ -117,7 +118,7 @@ class TableViewCell: UITableViewCell {
             rateLabel.heightAnchor.constraint(equalTo: rateLabel.widthAnchor)
         ])
     }
-
+    
     func setCellWithValues(_ movie: Movie) {
         updateUI(
             title: movie.title,
@@ -125,55 +126,55 @@ class TableViewCell: UITableViewCell {
             rating: movie.rate,
             overview: movie.overview,
             poster: movie.posterImage,
-            id: movie.id
-        )
+            id: movie.id,
+            posterImage: movie.presentImage)
     }
-
+    
     private func updateUI(
         title: String?,
         releaseDate: String?,
         rating: Double?,
         overview: String?,
         poster: String?,
-        id: Int?
+        id: Int?,
+        posterImage: String?
     ) {
         nameMovieLabel.text = title
         descpriptionMovieTextView.text = overview
-//        guard let movieId = id else { return }
-//        print("Мой id = \(movieId)")
-        //            self.movieYear.text = convertDateFormater(releaseDate)
-
+        
         guard let rate = rating else { return }
         rateLabel.text = String(rate)
-
-        guard let imageString = poster else { return }
-        urlString = "https://image.tmdb.org/t/p/w500" + imageString
-
-        guard let imageURL = URL(string: urlString) else {
-            movieImageView.image = UIImage(systemName: "star")
-            return
+        switch rate {
+        case 0.0...4.5:
+            rateLabel.backgroundColor = .systemRed
+        case 4.6...7.4:
+            rateLabel.backgroundColor = .systemYellow
+        case 7.5...10.00:
+            rateLabel.backgroundColor = .systemGreen
+        default:
+            break
         }
-
-//            self.movieImageView.image = UIImage(systemName: "star")
-
+        
+        guard let imageString = poster else { return }
+        let urlString = Constant.firstPartURL + imageString
+        
+        guard let imageURL = URL(string: urlString) else { return }
         getImageDataFrom(url: imageURL)
     }
-
-    // MARK: - Get image data
-
+    
     private func getImageDataFrom(url: URL) {
         URLSession.shared.dataTask(with: url) { data, _, error in
-
+            
             if let error = error {
-                print("DataTask error: \(error.localizedDescription)")
+                print(Constant.errorDataTask, error.localizedDescription)
                 return
             }
-
+            
             guard let data = data else {
-                print("Empty Data")
+                print(Constant.emptyData)
                 return
             }
-
+            
             DispatchQueue.main.async {
                 if let image = UIImage(data: data) {
                     self.movieImageView.image = image
@@ -181,19 +182,4 @@ class TableViewCell: UITableViewCell {
             }
         }.resume()
     }
-
-    // MARK: - Convert date format
-
-//        func convertDateFormater(_ date: String?) -> String {
-//            var fixDate = ""
-//            let dateFormatter = DateFormatter()
-//            dateFormatter.dateFormat = "yyyy-MM-dd"
-//            if let originalDate = date {
-//                if let newDate = dateFormatter.date(from: originalDate) {
-//                    dateFormatter.dateFormat = "dd.MM.yyyy"
-//                    fixDate = dateFormatter.string(from: newDate)
-//                }
-//            }
-//            return fixDate
-//        }
 }

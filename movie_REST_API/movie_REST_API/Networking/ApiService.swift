@@ -5,46 +5,58 @@ import Foundation
 
 /// Get Data
 class ApiService {
+    
+    private enum Constant {
+        static let errorDataTask = "DataTask error: "
+        static let emptyResponse = "Empty Response"
+        static let statusCode = "Response status code: "
+        static let emptyData = "Empty Data"
+    }
+    
     private var dataTask: URLSessionDataTask?
-
+    
     func getMoviesData(moviesURL: String, completion: @escaping (Result<MoviesData?, Error>) -> ()) {
         getData(url: moviesURL, completion: completion)
     }
-
+    
     func getActorData(actorURL: String, completion: @escaping (Result<ActorData?, Error>) -> ()) {
         getData(url: actorURL, completion: completion)
     }
-
+    
+    func getHomePageData(moviesURL: String, completion: @escaping (Result<HomaPageData?, Error>) -> ()) {
+        getData(url: moviesURL, completion: completion)
+    }
+    
     func getData<T: Decodable>(url: String, completion: @escaping (Result<T?, Error>) -> ()) {
         guard let url = URL(string: url) else { return }
-
+        
         dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-
+            
             if let error = error {
                 completion(.failure(error))
-                print("DataTask error: \(error.localizedDescription)")
+                print(Constant.errorDataTask, error.localizedDescription)
                 return
             }
-
+            
             guard let response = response as? HTTPURLResponse else {
-                print("Empty Response")
+                print(Constant.emptyResponse)
                 return
             }
-            print("Response status code: \(response.statusCode)")
-
+            print(Constant.statusCode, response.statusCode)
+            
             guard let data = data else {
-                print("Empty Data")
+                print(Constant.emptyData)
                 return
             }
-
+            
             do {
                 let decoder = JSONDecoder()
                 let jsonData = try decoder.decode(T.self, from: data)
-
+                
                 DispatchQueue.main.async {
                     completion(.success(jsonData))
                 }
-
+                
             } catch {
                 completion(.failure(error))
             }

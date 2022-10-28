@@ -5,16 +5,20 @@ import Foundation
 
 /// Получение данных об актерах
 class ActorViewModel {
+    
+    private enum Constant {
+        static let firstPartURL = "https://api.themoviedb.org/3/movie/"
+        static let secondPartURL = "/credits?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US"
+        static let error = "Error processing json data: "
+    }
+    
     private var apiService = ApiService()
     private var actors: [Actor] = []
-    private var viewModel = MovieViewModel()
-    var id: Int?
 
     func fetchPopularMoviesData(id: Int?, completion: @escaping () -> ()) {
-        print("API в ActorViewModel = \(id)")
+        
         guard let idMovie = id else { return }
-        let urlActor =
-            "https://api.themoviedb.org/3/movie/\(idMovie)/credits?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US"
+        let urlActor = Constant.firstPartURL + String(idMovie) + Constant.secondPartURL
         apiService.getActorData(actorURL: urlActor) { [weak self] result in
 
             switch result {
@@ -23,7 +27,7 @@ class ActorViewModel {
                 self?.actors = list.actor
                 completion()
             case let .failure(error):
-                print("Error processing json data: \(error)")
+                print(Constant.error, error)
             }
         }
     }

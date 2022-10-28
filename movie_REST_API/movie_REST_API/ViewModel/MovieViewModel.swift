@@ -5,34 +5,38 @@ import Foundation
 
 /// Получение данных о фильмах
 class MovieViewModel {
+    
+    private enum Constant {
+        static let urlMovie = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
+        static let error = "Error processing json data: "
+    }
+    
     private var apiService = ApiService()
-    private var popularMovies: [Movie] = []
-    var urlMovie =
-        "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
+    private var movies: [Movie] = []
+    var urlMovie = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
 
     func fetchPopularMoviesData(completion: @escaping () -> ()) {
-        print(urlMovie)
         apiService.getMoviesData(moviesURL: urlMovie) { [weak self] result in
 
             switch result {
             case let .success(listOf):
                 guard let list = listOf else { return }
-                self?.popularMovies = list.movies
+                self?.movies = list.movies
                 completion()
             case let .failure(error):
-                print("Error processing json data: \(error)")
+                print(Constant.error, error)
             }
         }
     }
 
     func numberOfRowsInSection(section: Int) -> Int {
-        if popularMovies.count != 0 {
-            return popularMovies.count
+        if movies.count != 0 {
+            return movies.count
         }
         return 0
     }
 
     func cellForRowAt(indexPath: IndexPath) -> Movie {
-        popularMovies[indexPath.row]
+        movies[indexPath.row]
     }
 }
