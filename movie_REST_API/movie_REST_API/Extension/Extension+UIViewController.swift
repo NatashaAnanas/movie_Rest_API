@@ -8,11 +8,15 @@
 import UIKit
 
 /// Расширение для UIViewController(Alert)
+private enum Constant {
+    static let okText = "OK"
+}
+
 extension UIViewController {
     typealias Closure = (() -> ())?
     func tapOkButton(title: String?, message: String, handler: Closure) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let alertControllerAction = UIAlertAction(title: "OK", style: .default) { _ in
+        let alertControllerAction = UIAlertAction(title: Constant.okText, style: .default) { _ in
             handler?()
         }
         alertController.addAction(alertControllerAction)

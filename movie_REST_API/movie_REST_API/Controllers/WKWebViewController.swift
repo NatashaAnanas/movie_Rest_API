@@ -125,7 +125,6 @@ final class WKWebViewController: UIViewController {
             case let .success(listOf):
                 guard let list = listOf else { return }
                 guard let list = list.homepage else { return }
-                print("CСЫЛКААААА \(list)")
                 self.getURL(url: list)
                 completion()
             case let .failure(error):
@@ -187,6 +186,7 @@ final class WKWebViewController: UIViewController {
     }
 }
 
+// MARK: - Подписываемся на делегаты WKNavigationDelegate
 extension WKWebViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

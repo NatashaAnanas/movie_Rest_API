@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// Модель  массив Актеры
+/// Модель массив Актеры
 struct ActorData: Decodable {
     let actor: [Actor]
 

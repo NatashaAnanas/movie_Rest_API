@@ -8,10 +8,10 @@ final class ApiService {
     
     // MARK: - Private Constant
     private enum Constant {
-        static let errorDataTask = "DataTask error: "
-        static let emptyResponse = "Empty Response"
-        static let statusCode = "Response status code: "
-        static let emptyData = "Empty Data"
+        static let errorDataTaskText = "DataTask error: "
+        static let emptyResponseText = "Empty Response"
+        static let statusCodeText = "Response status code: "
+        static let emptyDataText = "Empty Data"
     }
     
     // MARK: - Private Properties
@@ -38,18 +38,18 @@ final class ApiService {
             
             if let error = error {
                 completion(.failure(error))
-                print(Constant.errorDataTask, error.localizedDescription)
+                print(Constant.errorDataTaskText, error.localizedDescription)
                 return
             }
             
             guard let response = response as? HTTPURLResponse else {
-                print(Constant.emptyResponse)
+                print(Constant.emptyResponseText)
                 return
             }
-            print(Constant.statusCode, response.statusCode)
+            print(Constant.statusCodeText, response.statusCode)
             
             guard let data = data else {
-                print(Constant.emptyData)
+                print(Constant.emptyDataText)
                 return
             }
             

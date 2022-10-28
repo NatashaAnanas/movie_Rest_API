@@ -211,9 +211,9 @@ final class MovieViewController: UIViewController {
             newButton.widthAnchor.constraint(equalToConstant: 120)
             ])
     }
-
 }
 
+// MARK: - Подписываемся на делегаты UITableViewDelegate, UITableViewDataSource
 extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.numberOfRowsInSection(section: section)

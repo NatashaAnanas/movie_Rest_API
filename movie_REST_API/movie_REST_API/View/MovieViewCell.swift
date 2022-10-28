@@ -8,10 +8,10 @@ final class MovieViewCell: UITableViewCell {
     
     // MARK: - Private Constant
     private enum Constant {
-        static let fatalError = "init(coder:) has not been implemented"
+        static let fatalErrorText = "init(coder:) has not been implemented"
         static let firstPartURL =  "https://image.tmdb.org/t/p/w500"
-        static let errorDataTask = "DataTask error: "
-        static let emptyData = "Empty Data"
+        static let errorDataTaskText = "DataTask error: "
+        static let emptyDataText = "Empty Data"
     }
     
     // MARK: - Private Visual Components
@@ -65,7 +65,7 @@ final class MovieViewCell: UITableViewCell {
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError(Constant.fatalError)
+        fatalError(Constant.fatalErrorText)
     }
     
     // MARK: - Public Methods
@@ -169,12 +169,12 @@ final class MovieViewCell: UITableViewCell {
         URLSession.shared.dataTask(with: url) { data, _, error in
             
             if let error = error {
-                print(Constant.errorDataTask, error.localizedDescription)
+                print(Constant.errorDataTaskText, error.localizedDescription)
                 return
             }
             
             guard let data = data else {
-                print(Constant.emptyData)
+                print(Constant.emptyDataText)
                 return
             }
             

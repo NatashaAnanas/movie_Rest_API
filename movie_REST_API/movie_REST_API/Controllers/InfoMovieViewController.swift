@@ -91,6 +91,15 @@ final class InfoMovieViewController: UIViewController {
         loadPopularMoviesData()
     }
     
+    // MARK: - Public Method
+    func createPresentImage(image: String?) {
+        
+        guard let imageString = image else { return }
+        let urlString = Constant.firstPartURL + imageString
+        guard let imageURL = URL(string: urlString) else { return }
+        getImageDataFrom(url: imageURL)
+    }
+    
     // MARK: - Private Method
     private func action() {
         goToWebButton.addTarget(self, action: #selector(goToWebButtonAction(sender: )), for: .touchUpInside)
@@ -103,14 +112,6 @@ final class InfoMovieViewController: UIViewController {
         setLabelConstraints()
         setCollectionViewConstraints()
         setButtonConstraints()
-    }
-    
-    func createPresentImage(image: String?) {
-        
-        guard let imageString = image else { return }
-        let urlString = Constant.firstPartURL + imageString
-        guard let imageURL = URL(string: urlString) else { return }
-        getImageDataFrom(url: imageURL)
     }
     
     private func getImageDataFrom(url: URL) {
@@ -235,6 +236,7 @@ final class InfoMovieViewController: UIViewController {
     }
 }
 
+// MARK: - Подписываемся на делегаты UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension InfoMovieViewController: UICollectionViewDelegate,
     UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
