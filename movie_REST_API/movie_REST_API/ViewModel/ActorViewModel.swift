@@ -8,9 +8,9 @@ final class ActorViewModel {
     
     // MARK: - Private Constant
     private enum Constant {
-        static let firstPartURL = "https://api.themoviedb.org/3/movie/"
-        static let secondPartURL = "/credits?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US"
-        static let error = "Error processing json data: "
+        static let firstPartURLString = "https://api.themoviedb.org/3/movie/"
+        static let secondPartURLString = "/credits?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US"
+        static let errorString = "Error processing json data: "
     }
     
     // MARK: - Private Properties
@@ -18,19 +18,19 @@ final class ActorViewModel {
     private var actors: [Actor] = []
 
     // MARK: - Public Method
-    func fetchPopularMoviesData(id: Int?, completion: @escaping () -> ()) {
+    func fetchMoviesData(id: Int?, completion: @escaping () -> ()) {
         
         guard let idMovie = id else { return }
-        let urlActor = Constant.firstPartURL + String(idMovie) + Constant.secondPartURL
+        let urlActor = "\(Constant.firstPartURLString)\(String(idMovie))\(Constant.secondPartURLString)"
         apiService.getActorData(actorURL: urlActor) { [weak self] result in
 
             switch result {
             case let .success(listOf):
                 guard let list = listOf else { return }
-                self?.actors = list.actor
+                self?.actors = list.actors
                 completion()
             case let .failure(error):
-                print(Constant.error, error)
+                print(Constant.errorString, error)
             }
         }
     }

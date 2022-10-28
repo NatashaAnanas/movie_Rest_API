@@ -8,7 +8,7 @@ final class MovieViewModel {
     
     // MARK: - Private Constant
     private enum Constant {
-        static let error = "Error processing json data: "
+        static let errorString = "Error processing json data: "
     }
     
     // MARK: - Private Properties
@@ -16,10 +16,10 @@ final class MovieViewModel {
     private var movies: [Movie] = []
     
     // MARK: - Public Properties
-    var urlMovie = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
+    var urlMovie = String()
 
     // MARK: - Public Methods
-    func fetchPopularMoviesData(completion: @escaping () -> ()) {
+    func fetchMoviesData(completion: @escaping () -> ()) {
         apiService.getMoviesData(moviesURL: urlMovie) { [weak self] result in
 
             switch result {
@@ -28,7 +28,7 @@ final class MovieViewModel {
                 self?.movies = list.movies
                 completion()
             case let .failure(error):
-                print(Constant.error, error)
+                print(Constant.errorString, error)
             }
         }
     }

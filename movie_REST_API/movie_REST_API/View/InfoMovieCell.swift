@@ -8,10 +8,10 @@ final class InfoMovieCell: UICollectionViewCell {
     
     // MARK: - Private Constant
     private enum Constant {
-        static let fatalError = "init(coder:) has not been implemented"
-        static let firstPartURL =  "https://image.tmdb.org/t/p/w500"
-        static let errorDataTask = "DataTask error: "
-        static let emptyData = "Empty Data"
+        static let fatalErrorString = "init(coder:) has not been implemented"
+        static let firstPartURLString =  "https://image.tmdb.org/t/p/w500"
+        static let errorDataTaskString = "DataTask error: "
+        static let emptyDataString = "Empty Data"
     }
     
     // MARK: - Private Visual Components
@@ -45,7 +45,7 @@ final class InfoMovieCell: UICollectionViewCell {
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError(Constant.fatalError)
+        fatalError(Constant.fatalErrorString)
     }
     
     // MARK: - Private Method
@@ -67,15 +67,15 @@ final class InfoMovieCell: UICollectionViewCell {
         ])
     }
     
-    func setCellWithValues(_ actor: Actor) {
-        updateUI(actorImage: actor.actorImage, name: actor.name)
+    func setCellWithValues(_ actors: Actor) {
+        updateUI(actorImage: actors.actorImageURLString, name: actors.name)
     }
     
     private func updateUI(actorImage: String?, name: String?) {
         label.text = name
         
         guard let imageString = actorImage else { return }
-        let urlString = Constant.firstPartURL + imageString
+        let urlString = "\(Constant.firstPartURLString)\(imageString)"
         
         guard let imageURL = URL(string: urlString) else { return }
         
@@ -86,12 +86,12 @@ final class InfoMovieCell: UICollectionViewCell {
         URLSession.shared.dataTask(with: url) { data, _, error in
             
             if let error = error {
-                print(Constant.errorDataTask, error.localizedDescription)
+                print(Constant.errorDataTaskString, error.localizedDescription)
                 return
             }
             
             guard let data = data else {
-                print(Constant.emptyData)
+                print(Constant.emptyDataString)
                 return
             }
             

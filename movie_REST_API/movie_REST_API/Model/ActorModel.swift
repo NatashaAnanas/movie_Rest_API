@@ -5,20 +5,20 @@ import Foundation
 
 /// Модель массив Актеры
 struct ActorData: Decodable {
-    let actor: [Actor]
+    let actors: [Actor]
 
     private enum CodingKeys: String, CodingKey {
-        case actor = "cast"
+        case actors = "cast"
     }
 }
 
 /// Модель Актеры
 struct Actor: Decodable {
     let name: String?
-    let actorImage: String?
+    let actorImageURLString: String?
 
     private enum CodingKeys: String, CodingKey {
         case name
-        case actorImage = "profile_path"
+        case actorImageURLString = "profile_path"
     }
 }

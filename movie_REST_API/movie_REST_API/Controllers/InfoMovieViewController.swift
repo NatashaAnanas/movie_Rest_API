@@ -9,16 +9,16 @@ final class InfoMovieViewController: UIViewController {
     // MARK: - Private Constant
     private enum Constant {
         static let cellIdentifier = "cell"
-        static let errorDataTask = "DataTask error: "
-        static let emptyData = "Empty Data"
-        static let firstPartURL =  "https://image.tmdb.org/t/p/w500"
+        static let errorDataTaskString = "DataTask error: "
+        static let emptyDataString = "Empty Data"
+        static let firstPartURLString =  "https://image.tmdb.org/t/p/w500"
         static let starImageName = "star"
         static let starFillImageName = "star.fill"
         static let emptyString = ""
-        static let addFavouriteText = "Фильм добавлен в избранное"
-        static let deleteFavouriteText = "Фильм удален из избранного"
+        static let addFavouriteString = "Фильм добавлен в избранное"
+        static let deleteFavouriteString = "Фильм удален из избранного"
         static let baseImageName = "фон5"
-        static let watchText = "Смотреть"
+        static let watchString = "Смотреть"
     }
     
     // MARK: - Private Visual Components
@@ -43,7 +43,7 @@ final class InfoMovieViewController: UIViewController {
     
     private let goToWebButton: UIButton = {
         let button = UIButton()
-        button.setTitle( Constant.watchText, for: .normal)
+        button.setTitle( Constant.watchString, for: .normal)
         button.layer.cornerRadius = 10
         button.backgroundColor = .systemPurple
         button.setTitleColor(UIColor.black, for: .normal)
@@ -53,10 +53,6 @@ final class InfoMovieViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-    private let secondViewModel = ActorViewModel()
-    
-    private var isPress = false
 
     let descpriptionTextView: UITextView = {
         let text = UITextView()
@@ -79,23 +75,28 @@ final class InfoMovieViewController: UIViewController {
         return label
     }()
 
+    // MARK: - Private Properties
+    private let actorViewModel = ActorViewModel()
+    private var isPress = false
+    
     var idNew: Int?
 
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         createUI()
+        createNavController()
         createCollectionView()
         setConstraints()
         action()
-        loadPopularMoviesData()
+        loadMoviesData()
     }
     
     // MARK: - Public Method
     func createPresentImage(image: String?) {
         
         guard let imageString = image else { return }
-        let urlString = Constant.firstPartURL + imageString
+        let urlString = Constant.firstPartURLString + imageString
         guard let imageURL = URL(string: urlString) else { return }
         getImageDataFrom(url: imageURL)
     }
@@ -118,12 +119,12 @@ final class InfoMovieViewController: UIViewController {
         URLSession.shared.dataTask(with: url) { data, _, error in
             
             if let error = error {
-                print(Constant.errorDataTask, error.localizedDescription)
+                print(Constant.errorDataTaskString, error.localizedDescription)
                 return
             }
             
             guard let data = data else {
-                print(Constant.emptyData)
+                print(Constant.emptyDataString)
                 return
             }
             
@@ -138,6 +139,22 @@ final class InfoMovieViewController: UIViewController {
     private func createUI() {
         view.backgroundColor = .black
         
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: Constant.baseImageName)
+        backgroundImage.contentMode = .scaleAspectFill
+        view.insertSubview(backgroundImage, at: 0)
+
+        addUI()
+    }
+    
+    private func addUI() {
+        view.addSubview(nameFilmLabel)
+        view.addSubview(movieImageView)
+        view.addSubview(descpriptionTextView)
+        view.addSubview(goToWebButton)
+    }
+    
+    private func createNavController() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: Constant.starImageName),
             style: .done,
@@ -146,25 +163,16 @@ final class InfoMovieViewController: UIViewController {
         )
         navigationItem.rightBarButtonItem?.tintColor = .purple
         navigationController?.navigationBar.tintColor = UIColor.black
-        
-        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: Constant.baseImageName)
-        backgroundImage.contentMode = .scaleAspectFill
-        view.insertSubview(backgroundImage, at: 0)
-        
-        view.addSubview(nameFilmLabel)
-        view.addSubview(movieImageView)
-        view.addSubview(descpriptionTextView)
-        view.addSubview(goToWebButton)
+
     }
     
     @objc private func starAction() {
         if isPress == false {
-            tapOkButton(title: Constant.addFavouriteText, message: Constant.emptyString, handler: nil)
+            tapOkButton(title: Constant.addFavouriteString, message: Constant.emptyString, handler: nil)
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: Constant.starFillImageName)
             isPress = true
         } else {
-            tapOkButton(title: Constant.deleteFavouriteText, message: Constant.emptyString, handler: nil)
+            tapOkButton(title: Constant.deleteFavouriteString, message: Constant.emptyString, handler: nil)
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: Constant.starImageName)
             isPress = false
         }
@@ -221,8 +229,8 @@ final class InfoMovieViewController: UIViewController {
         ])
     }
 
-    private func loadPopularMoviesData() {
-        secondViewModel.fetchPopularMoviesData(id: idNew) { [weak self] in
+    private func loadMoviesData() {
+        actorViewModel.fetchMoviesData(id: idNew) { [weak self] in
             DispatchQueue.main.async {
                 self?.imageCollectionView.reloadData()
             }
@@ -240,7 +248,7 @@ final class InfoMovieViewController: UIViewController {
 extension InfoMovieViewController: UICollectionViewDelegate,
     UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        secondViewModel.numberOfRowsInSection(section: section)
+        actorViewModel.numberOfRowsInSection(section: section)
     }
 
     func collectionView(
@@ -252,7 +260,7 @@ extension InfoMovieViewController: UICollectionViewDelegate,
             for: indexPath
         ) as? InfoMovieCell else { return UICollectionViewCell() }
 
-        let actor = secondViewModel.cellForRowAt(indexPath: indexPath)
+        let actor = actorViewModel.cellForRowAt(indexPath: indexPath)
         cell.setCellWithValues(actor)
         cell.backgroundColor = .tertiaryLabel
         cell.layer.cornerRadius = 20

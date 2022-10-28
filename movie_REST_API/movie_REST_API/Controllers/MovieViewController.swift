@@ -9,21 +9,21 @@ final class MovieViewController: UIViewController {
     // MARK: - Private Constant
     private enum Constant {
         static let filmIdentifier = "film"
-        static let allFilmText = "Все фильмы"
-        static let popularFilmText = "Популярное"
-        static let filmsText = "Фильмы"
-        static let urlAllFilm = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
-        static let urlPopularFilm = "https://api.themoviedb.org/3/movie/top_rated?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
+        static let allFilmString = "Все фильмы"
+        static let popularFilmString = "Популярное"
+        static let filmsString = "Фильмы"
+        static let allFilmURLString = "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
+        static let popularFilmURLString = "https://api.themoviedb.org/3/movie/top_rated?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
         static let baseImageName = "фон4"
         static let baseImageFilmName = "film"
-        static let newFilmText = "Новинки"
+        static let newFilmString = "Новинки"
     }
     
     // MARK: - Private Visual Components
     private let newButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemGreen
-        button.setTitle(Constant.newFilmText, for: .normal)
+        button.setTitle(Constant.newFilmString, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button.layer.cornerRadius = 15
@@ -53,7 +53,7 @@ final class MovieViewController: UIViewController {
         button.layer.shadowOffset = CGSize(width: 2.5, height: 2.5)
 
         button.backgroundColor = .systemBlue
-        button.setTitle(Constant.allFilmText, for: .normal)
+        button.setTitle(Constant.allFilmString, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.tag = 0
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +69,7 @@ final class MovieViewController: UIViewController {
         button.layer.shadowOpacity = 0.8
         button.layer.shadowOffset = CGSize(width: 2.5, height: 2.5)
         button.backgroundColor = .systemCyan
-        button.setTitle(Constant.popularFilmText, for: .normal)
+        button.setTitle(Constant.popularFilmString, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.tag = 1
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -88,8 +88,7 @@ final class MovieViewController: UIViewController {
     
     // MARK: - Private Properties
     private var isPress = true
-    private var viewModel = MovieViewModel()
-    private var secondViewModel = ActorViewModel()
+    private var movieViewModel = MovieViewModel()
 
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -98,7 +97,7 @@ final class MovieViewController: UIViewController {
         createTableView()
         action()
         setConstraint()
-        loadPopularMoviesData()
+        loadMoviesData()
     }
 
     // MARK: - Private Method
@@ -121,21 +120,21 @@ final class MovieViewController: UIViewController {
         
         switch sender.tag {
         case 0:
-            let url = Constant.urlAllFilm
-            viewModel.urlMovie = url
-            loadPopularMoviesData()
+            let url = Constant.allFilmURLString
+            movieViewModel.urlMovie = url
+            loadMoviesData()
 
         case 1:
-            let url = Constant.urlPopularFilm
-            viewModel.urlMovie = url
-            loadPopularMoviesData()
+            let url = Constant.popularFilmURLString
+            movieViewModel.urlMovie = url
+            loadMoviesData()
         default:
             break
         }
     }
 
-    private func loadPopularMoviesData() {
-        viewModel.fetchPopularMoviesData { [weak self] in
+    private func loadMoviesData() {
+        movieViewModel.fetchMoviesData { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
@@ -143,7 +142,7 @@ final class MovieViewController: UIViewController {
     }
     
     private func createUI() {
-        title = Constant.filmsText
+        title = Constant.filmsString
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:
                                                                     UIColor.black]
         
@@ -218,7 +217,7 @@ final class MovieViewController: UIViewController {
 // MARK: - Подписываемся на делегаты UITableViewDelegate, UITableViewDataSource
 extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.numberOfRowsInSection(section: section)
+        movieViewModel.numberOfRowsInSection(section: section)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -227,7 +226,7 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
             for: indexPath
         ) as? MovieViewCell else { return UITableViewCell() }
 
-        let movie = viewModel.cellForRowAt(indexPath: indexPath)
+        let movie = movieViewModel.cellForRowAt(indexPath: indexPath)
         cell.setCellWithValues(movie)
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: UIScreen.main.bounds.width)
         cell.selectionStyle = .none
@@ -238,10 +237,10 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let secondVC = InfoMovieViewController()
-        let movie = viewModel.cellForRowAt(indexPath: indexPath)
+        let movie = movieViewModel.cellForRowAt(indexPath: indexPath)
         secondVC.idNew = movie.id
-        secondVC.createPresentImage(image: movie.presentImage)
-        secondVC.descpriptionTextView.text = movie.overview
+        secondVC.createPresentImage(image: movie.presentImageURLString)
+        secondVC.descpriptionTextView.text = movie.description
         secondVC.nameFilmLabel.text = movie.title
         navigationController?.pushViewController(secondVC, animated: true)
     }
