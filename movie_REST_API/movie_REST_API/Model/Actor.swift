@@ -1,4 +1,4 @@
-// ActorModel.swift
+// ActorData.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation

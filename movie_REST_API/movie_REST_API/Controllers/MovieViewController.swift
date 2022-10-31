@@ -87,35 +87,35 @@ final class MovieViewController: UIViewController {
     }()
     
     // MARK: - Private Properties
-    private var isPress = true
-    private var movieViewModel = MovieViewModel()
+    private var isPressed = true
+    private var movieViewModel = MovieView()
 
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         createUI()
-        createTableView()
-        action()
+        setupTableViewDelegats()
+        setupAction()
         setConstraint()
         loadMoviesData()
     }
 
     // MARK: - Private Method
-    private func action() {
-        popularButton.addTarget(self, action: #selector(buttonAction(sender:)), for: .touchUpInside)
-        rateButton.addTarget(self, action: #selector(buttonAction(sender:)), for: .touchUpInside)
+    private func setupAction() {
+        popularButton.addTarget(self, action: #selector(chooseMovieButtonAction(sender:)), for: .touchUpInside)
+        rateButton.addTarget(self, action: #selector(chooseMovieButtonAction(sender:)), for: .touchUpInside)
     }
 
-    @objc private func buttonAction(sender: UIButton) {
+    @objc private func chooseMovieButtonAction(sender: UIButton) {
         
-        if isPress {
+        if isPressed {
             popularButton.backgroundColor = .systemCyan
             rateButton.backgroundColor = .systemBlue
-            isPress = false
+            isPressed = false
         } else {
             popularButton.backgroundColor = .systemBlue
             rateButton.backgroundColor = .systemCyan
-            isPress = true
+            isPressed = true
         }
         
         switch sender.tag {
@@ -146,10 +146,7 @@ final class MovieViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:
                                                                     UIColor.black]
         
-        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: Constant.baseImageName)
-        backgroundImage.contentMode = .scaleAspectFill
-        view.insertSubview(backgroundImage, at: 0)
+        createBackgroundImage()
         
         view.addSubview(baseImageView)
         view.addSubview(tableView)
@@ -157,8 +154,15 @@ final class MovieViewController: UIViewController {
         view.addSubview(rateButton)
         view.addSubview(newButton)
     }
+    
+    private func createBackgroundImage() {
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: Constant.baseImageName)
+        backgroundImage.contentMode = .scaleAspectFill
+        view.insertSubview(backgroundImage, at: 0)
+    }
 
-    private func createTableView() {
+    private func setupTableViewDelegats() {
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -233,9 +237,8 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
         cell.backgroundColor = .none
         return cell
     }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+    
+    private func goToInfoVC(indexPath: IndexPath) {
         let secondVC = InfoMovieViewController()
         let movie = movieViewModel.cellForRowAt(indexPath: indexPath)
         secondVC.idNew = movie.id
@@ -243,5 +246,9 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
         secondVC.descpriptionTextView.text = movie.description
         secondVC.nameFilmLabel.text = movie.title
         navigationController?.pushViewController(secondVC, animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        goToInfoVC(indexPath: indexPath)
     }
 }

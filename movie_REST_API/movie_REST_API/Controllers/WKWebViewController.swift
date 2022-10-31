@@ -27,7 +27,7 @@ final class WKWebViewController: UIViewController, WKNavigationDelegate {
     // MARK: - Private Properties
     private var apiService = ApiService()
     private var homePage: HomaPageData?
-    private var url = String()
+    private var urlString = String()
     
     // MARK: - Public Properties
     var id: Int?
@@ -46,14 +46,14 @@ final class WKWebViewController: UIViewController, WKNavigationDelegate {
         guard let idMovie = id else { return }
     
         let urlPage = Constant.firstPartURLString + String(idMovie) + Constant.secondPartURLString
-        url = urlPage
-        apiService.getHomePageData(moviesURL: urlPage) { result in
+        urlString = urlPage
+        apiService.getHomePageData(moviesURL: urlPage) { [weak self] result in
 
             switch result {
             case let .success(listOf):
                 guard let list = listOf else { return }
                 guard let list = list.homepage else { return }
-                self.getURL(url: list)
+                self?.getURL(url: list)
                 completion()
             case let .failure(error):
                 print(Constant.errorString, error)

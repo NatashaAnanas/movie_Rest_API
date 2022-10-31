@@ -21,7 +21,28 @@ final class InfoMovieViewController: UIViewController {
         static let watchString = "Смотреть"
     }
     
-    // MARK: - Private Visual Components
+    // MARK: - Visual Components
+    let descpriptionTextView: UITextView = {
+        let text = UITextView()
+        text.font = .systemFont(ofSize: 22)
+        text.backgroundColor = .none
+        text.textColor = .black
+        text.textAlignment = .center
+        text.showsVerticalScrollIndicator = false
+        text.translatesAutoresizingMaskIntoConstraints = false
+        return text
+    }()
+    
+    let nameFilmLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 25)
+        label.textColor = .black
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     private let imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -54,30 +75,9 @@ final class InfoMovieViewController: UIViewController {
         return button
     }()
 
-    let descpriptionTextView: UITextView = {
-        let text = UITextView()
-        text.font = .systemFont(ofSize: 22)
-        text.backgroundColor = .none
-        text.textColor = .black
-        text.textAlignment = .center
-        text.showsVerticalScrollIndicator = false
-        text.translatesAutoresizingMaskIntoConstraints = false
-        return text
-    }()
-    
-    let nameFilmLabel: UILabel = {
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 25)
-        label.textColor = .black
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
     // MARK: - Private Properties
-    private let actorViewModel = ActorViewModel()
-    private var isPress = false
+    private let actorView = ActorView()
+    private var isPressed = false
     
     var idNew: Int?
 
@@ -138,13 +138,15 @@ final class InfoMovieViewController: UIViewController {
     
     private func createUI() {
         view.backgroundColor = .black
-        
+        createBackground()
+        addUI()
+    }
+    
+    private func createBackground() {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(named: Constant.baseImageName)
         backgroundImage.contentMode = .scaleAspectFill
         view.insertSubview(backgroundImage, at: 0)
-
-        addUI()
     }
     
     private func addUI() {
@@ -167,14 +169,14 @@ final class InfoMovieViewController: UIViewController {
     }
     
     @objc private func starAction() {
-        if isPress == false {
-            tapOkButton(title: Constant.addFavouriteString, message: Constant.emptyString, handler: nil)
+        if isPressed == false {
+            showAlert(title: Constant.addFavouriteString, message: Constant.emptyString, handler: nil)
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: Constant.starFillImageName)
-            isPress = true
+            isPressed = true
         } else {
-            tapOkButton(title: Constant.deleteFavouriteString, message: Constant.emptyString, handler: nil)
+            showAlert(title: Constant.deleteFavouriteString, message: Constant.emptyString, handler: nil)
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: Constant.starImageName)
-            isPress = false
+            isPressed = false
         }
     }
 
@@ -193,6 +195,7 @@ final class InfoMovieViewController: UIViewController {
             movieImageView.heightAnchor.constraint(equalToConstant: 230)
         ])
     }
+    
     private func setLabelConstraints() {
         NSLayoutConstraint.activate([
             nameFilmLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
@@ -230,7 +233,7 @@ final class InfoMovieViewController: UIViewController {
     }
 
     private func loadMoviesData() {
-        actorViewModel.fetchMoviesData(id: idNew) { [weak self] in
+        actorView.fetchMoviesData(id: idNew) { [weak self] in
             DispatchQueue.main.async {
                 self?.imageCollectionView.reloadData()
             }
@@ -248,7 +251,7 @@ final class InfoMovieViewController: UIViewController {
 extension InfoMovieViewController: UICollectionViewDelegate,
     UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        actorViewModel.numberOfRowsInSection(section: section)
+        actorView.numberOfRowsInSection(section: section)
     }
 
     func collectionView(
@@ -260,7 +263,7 @@ extension InfoMovieViewController: UICollectionViewDelegate,
             for: indexPath
         ) as? InfoMovieCell else { return UICollectionViewCell() }
 
-        let actor = actorViewModel.cellForRowAt(indexPath: indexPath)
+        let actor = actorView.cellForRowAt(indexPath: indexPath)
         cell.setCellWithValues(actor)
         cell.backgroundColor = .tertiaryLabel
         cell.layer.cornerRadius = 20

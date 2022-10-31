@@ -3,7 +3,7 @@
 
 import UIKit
 
-/// Ячейк с фотографиями актеров
+/// Ячейка с фотографиями актеров
 final class InfoMovieCell: UICollectionViewCell {
     
     // MARK: - Private Constant
@@ -25,7 +25,7 @@ final class InfoMovieCell: UICollectionViewCell {
         return image
     }()
     
-    private let label: UILabel = {
+    private let personLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.textAlignment = .center
@@ -37,7 +37,7 @@ final class InfoMovieCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(label)
+        addSubview(personLabel)
         addSubview(personImageView)
         setConstraintsImage()
         setConstraintsLabel()
@@ -60,10 +60,10 @@ final class InfoMovieCell: UICollectionViewCell {
     
     private func setConstraintsLabel() {
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            label.heightAnchor.constraint(equalToConstant: 30)
+            personLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            personLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            personLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            personLabel.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
@@ -72,7 +72,7 @@ final class InfoMovieCell: UICollectionViewCell {
     }
     
     private func updateUI(actorImage: String?, name: String?) {
-        label.text = name
+        personLabel.text = name
         
         guard let imageString = actorImage else { return }
         let urlString = "\(Constant.firstPartURLString)\(imageString)"

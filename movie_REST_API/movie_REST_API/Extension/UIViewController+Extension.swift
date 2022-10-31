@@ -1,5 +1,5 @@
 //
-//  Extension+UIViewController.swift
+//  UIViewController+Extension.swift
 //  movie_REST_API
 //
 //  Created by Анастасия Козлова on 28.10.2022.
@@ -14,7 +14,7 @@ private enum Constant {
 
 extension UIViewController {
     typealias Closure = (() -> ())?
-    func tapOkButton(title: String?, message: String, handler: Closure) {
+    func showAlert(title: String?, message: String, handler: Closure) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertControllerAction = UIAlertAction(title: Constant.okTextString, style: .default) { _ in
             handler?()

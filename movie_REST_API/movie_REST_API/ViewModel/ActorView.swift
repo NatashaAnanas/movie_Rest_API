@@ -1,10 +1,10 @@
-// SecondViewModel.swift
+// ActorView.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
 
 /// Получение данных об актерах
-final class ActorViewModel {
+final class ActorView {
     
     // MARK: - Private Constant
     private enum Constant {

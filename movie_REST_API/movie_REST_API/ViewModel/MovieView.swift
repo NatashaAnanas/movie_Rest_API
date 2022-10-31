@@ -1,22 +1,22 @@
-// MovieViewModel.swift
+// MovieView.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
 
 /// Получение данных о фильмах
-final class MovieViewModel {
+final class MovieView {
     
     // MARK: - Private Constant
     private enum Constant {
         static let errorString = "Error processing json data: "
     }
     
+    // MARK: - Public Properties
+    var urlMovie = String()
+    
     // MARK: - Private Properties
     private let apiService = ApiService()
     private var movies: [Movie] = []
-    
-    // MARK: - Public Properties
-    var urlMovie = String()
 
     // MARK: - Public Methods
     func fetchMoviesData(completion: @escaping () -> ()) {
