@@ -11,5 +11,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
-    ) {}
+    ) {
+        let movieVC = MovieViewController()
+        let navController = UINavigationController(rootViewController: movieVC)
+        window?.rootViewController = navController
+        window?.makeKeyAndVisible()
+    }
 }
