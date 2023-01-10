@@ -1,9 +1,5 @@
-//
-//  MainPresenter.swift
-//  movie_REST_API
-//
-//  Created by Анастасия Козлова on 09.01.2023.
-//
+// MainPresenter.swift
+// Copyright © RoadMap. All rights reserved.
 
 import Foundation
 
@@ -24,27 +20,29 @@ protocol MainViewPresenterProtocol: AnyObject {
 
 /// Презентер главного экрана со списком фильмов
 class MainPresenter: MainViewPresenterProtocol {
-    
     let networkService: NetworkServiceProtocol?
     var urlMovie: String
     var movies: [Movie]?
     var router: RouterProtocol?
     weak var view: MainViewProtocol?
-    
-    required init(view: MainViewProtocol,
-                  networkService: NetworkServiceProtocol,
-                  urlMovie: String,
-                  router: RouterProtocol) {
+
+    required init(
+        view: MainViewProtocol,
+        networkService: NetworkServiceProtocol,
+        urlMovie: String,
+        router: RouterProtocol
+    ) {
         self.view = view
         self.networkService = networkService
         self.urlMovie = urlMovie
         self.router = router
-        self.fetchMoviesData()
+        fetchMoviesData()
     }
-    
+
     // MARK: - Public Methods
+
     func fetchMoviesData() {
-        networkService?.getMoviesData(moviesURL: self.urlMovie) { [weak self] result in
+        networkService?.getMoviesData(moviesURL: urlMovie) { [weak self] result in
             switch result {
             case let .success(movies):
                 self?.movies = movies
@@ -55,7 +53,7 @@ class MainPresenter: MainViewPresenterProtocol {
             }
         }
     }
-    
+
     func numberOfRowsInSection(section: Int) -> Int {
         guard let movies = movies else { return 0 }
         if movies.count != 0 {
@@ -63,12 +61,12 @@ class MainPresenter: MainViewPresenterProtocol {
         }
         return 0
     }
-    
+
     func cellForRowAt(indexPath: IndexPath) -> Movie {
         guard let movies = movies else { return Movie(json: nil) }
         return movies[indexPath.row]
     }
-    
+
     func tapOnTheMovie(movie: Movie) {
         router?.showCurrentMovieVC(movie: movie)
     }

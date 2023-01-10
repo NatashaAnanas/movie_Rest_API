@@ -1,9 +1,5 @@
-//
-//  PhotoLoadService.swift
-//  movie_REST_API
-//
-//  Created by Анастасия Козлова on 09.01.2023.
-//
+// PhotoLoadService.swift
+// Copyright © RoadMap. All rights reserved.
 
 import Alamofire
 import Foundation
@@ -15,9 +11,8 @@ protocol PhotoLoadServiceProtocol {
 /// Сервис загрузки фотографий
 final class PhotoLoadService: PhotoLoadServiceProtocol {
     // MARK: - Public Methods
-    
+
     func fetchImage(imageUrl: String, completion: @escaping (Result<Data, Error>) -> ()) {
-        
         AF.request(imageUrl).responseJSON { response in
             do {
                 guard let data = response.data else { return }

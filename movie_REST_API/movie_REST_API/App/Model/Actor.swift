@@ -1,4 +1,4 @@
-// ActorData.swift
+// Actor.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
@@ -20,7 +20,7 @@ struct Actor: Decodable {
     var name: String?
     /// фото актера
     var actorImageURLString: String?
-    
+
     init(json: JSON) {
         name = json["name"].string
         actorImageURLString = json["profile_path"].string

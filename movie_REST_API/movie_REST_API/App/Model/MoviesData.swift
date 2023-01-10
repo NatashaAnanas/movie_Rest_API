@@ -30,7 +30,7 @@ struct Movie: Decodable {
     var description: String?
     /// ссылка на обложку фильма
     var presentImageURLString: String?
-    
+
     init(json: JSON?) {
         id = json?["id"].int
         title = json?["title"].string

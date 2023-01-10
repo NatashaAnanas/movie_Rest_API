@@ -1,25 +1,26 @@
-// SecondViewController.swift
+// InfoMovieViewController.swift
 // Copyright © RoadMap. All rights reserved.
 
 import UIKit
 
 /// Страница выбранного фильма
 final class InfoMovieViewController: UIViewController {
-    
     // MARK: - Private Constant
+
     private enum Constant {
         static let cellIdentifier = "cell"
         static let errorDataTaskString = "DataTask error: "
         static let emptyDataString = "Empty Data"
-        static let firstPartURLString =  "https://image.tmdb.org/t/p/w500"
+        static let firstPartURLString = "https://image.tmdb.org/t/p/w500"
         static let starImageName = "star"
         static let starFillImageName = "star.fill"
         static let emptyString = ""
         static let baseImageName = "фон5"
         static let watchString = "Смотреть"
     }
-    
+
     // MARK: - Visual Components
+
     let descpriptionTextView: UITextView = {
         let text = UITextView()
         text.font = .systemFont(ofSize: 22)
@@ -30,7 +31,7 @@ final class InfoMovieViewController: UIViewController {
         text.translatesAutoresizingMaskIntoConstraints = false
         return text
     }()
-    
+
     let nameFilmLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 25)
@@ -40,7 +41,7 @@ final class InfoMovieViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private let imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -48,10 +49,10 @@ final class InfoMovieViewController: UIViewController {
         collection.backgroundColor = .none
         collection.showsHorizontalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return collection
     }()
-    
+
     private let movieImageView: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 15
@@ -59,10 +60,10 @@ final class InfoMovieViewController: UIViewController {
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-    
+
     private let goToWebButton: UIButton = {
         let button = UIButton()
-        button.setTitle( Constant.watchString, for: .normal)
+        button.setTitle(Constant.watchString, for: .normal)
         button.layer.cornerRadius = 10
         button.backgroundColor = .systemPurple
         button.setTitleColor(UIColor.black, for: .normal)
@@ -72,17 +73,20 @@ final class InfoMovieViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     // MARK: - Private Properties
+
     private let actorView = ActorView()
     private var isPressed = false
-    
+
     // MARK: - Public Properties
+
     var idNew: Int?
     var router: Router?
     var presenter: InfoMovieViewPresenterProtocol?
-    
+
     // MARK: - Life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         createUI()
@@ -92,17 +96,19 @@ final class InfoMovieViewController: UIViewController {
         action()
         loadMoviesData()
     }
-    
+
     // MARK: - Public Method
+
     func createPresentImage() {
         presenter?.getImageDataFrom()
     }
-    
+
     // MARK: - Private Method
+
     private func action() {
-        goToWebButton.addTarget(self, action: #selector(goToWebButtonAction(sender: )), for: .touchUpInside)
+        goToWebButton.addTarget(self, action: #selector(goToWebButtonAction(sender:)), for: .touchUpInside)
     }
-    
+
     private func setConstraints() {
         setLabelConstraints()
         setImageConstraints()
@@ -111,24 +117,24 @@ final class InfoMovieViewController: UIViewController {
         setCollectionViewConstraints()
         setButtonConstraints()
     }
-    
+
     private func createUI() {
         view.backgroundColor = .black
         createBackground()
         addUI()
     }
-    
+
     private func createBackground() {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(named: Constant.baseImageName)
         backgroundImage.contentMode = .scaleAspectFill
         view.insertSubview(backgroundImage, at: 0)
     }
-    
+
     private func addUI() {
         view.addSubviews(nameFilmLabel, movieImageView, descpriptionTextView, goToWebButton)
     }
-    
+
     private func createNavController() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: Constant.starImageName),
@@ -139,15 +145,17 @@ final class InfoMovieViewController: UIViewController {
         navigationItem.rightBarButtonItem?.tintColor = .purple
         navigationController?.navigationBar.tintColor = UIColor.black
     }
-    
+
     private func createCollectionView() {
-        imageCollectionView.register(InfoMovieCell.self,
-                                     forCellWithReuseIdentifier: Constant.cellIdentifier)
+        imageCollectionView.register(
+            InfoMovieCell.self,
+            forCellWithReuseIdentifier: Constant.cellIdentifier
+        )
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
         view.addSubview(imageCollectionView)
     }
-    
+
     private func setImageConstraints() {
         NSLayoutConstraint.activate([
             movieImageView.topAnchor.constraint(equalTo: nameFilmLabel.bottomAnchor, constant: 10),
@@ -156,7 +164,7 @@ final class InfoMovieViewController: UIViewController {
             movieImageView.heightAnchor.constraint(equalToConstant: 230)
         ])
     }
-    
+
     private func setLabelConstraints() {
         NSLayoutConstraint.activate([
             nameFilmLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
@@ -165,7 +173,7 @@ final class InfoMovieViewController: UIViewController {
             nameFilmLabel.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
-    
+
     private func setTextViewConstraints() {
         NSLayoutConstraint.activate([
             descpriptionTextView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 10),
@@ -174,7 +182,7 @@ final class InfoMovieViewController: UIViewController {
             descpriptionTextView.heightAnchor.constraint(equalToConstant: 190)
         ])
     }
-    
+
     private func setCollectionViewConstraints() {
         NSLayoutConstraint.activate([
             imageCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
@@ -183,7 +191,7 @@ final class InfoMovieViewController: UIViewController {
             imageCollectionView.heightAnchor.constraint(equalToConstant: 300)
         ])
     }
-    
+
     private func setButtonConstraints() {
         NSLayoutConstraint.activate([
             goToWebButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 335),
@@ -192,13 +200,13 @@ final class InfoMovieViewController: UIViewController {
             goToWebButton.widthAnchor.constraint(equalToConstant: 120)
         ])
     }
-    
+
     private func loadMoviesData() {
         actorView.fetchMoviesData(id: idNew) { [weak self] in
             self?.imageCollectionView.reloadData()
         }
     }
-    
+
     @objc func goToWebButtonAction(sender: UIButton) {
         let wkWebVC = WKWebViewController()
         wkWebVC.id = idNew
@@ -207,12 +215,14 @@ final class InfoMovieViewController: UIViewController {
 }
 
 // MARK: - Подписываемся на делегаты UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+
 extension InfoMovieViewController: UICollectionViewDelegate,
-                                   UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         actorView.numberOfRowsInSection(section: section)
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
@@ -221,15 +231,15 @@ extension InfoMovieViewController: UICollectionViewDelegate,
             withReuseIdentifier: Constant.cellIdentifier,
             for: indexPath
         ) as? InfoMovieCell else { return UICollectionViewCell() }
-        
+
         let actor = actorView.cellForRowAt(indexPath: indexPath)
         cell.setCellWithValues(actor)
         cell.backgroundColor = .tertiaryLabel
         cell.layer.cornerRadius = 20
-        
+
         return cell
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -242,9 +252,9 @@ extension InfoMovieViewController: UICollectionViewDelegate,
 extension InfoMovieViewController: InfoMovieViewProtocol {
     func succes(data: Data) {
         guard let image = UIImage(data: data) else { return }
-        self.movieImageView.image = image
+        movieImageView.image = image
     }
-    
+
     func failure(error: Error) {
         showAlert(title: nil, message: error.localizedDescription, handler: nil)
     }
