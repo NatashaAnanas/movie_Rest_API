@@ -15,8 +15,6 @@ final class InfoMovieViewController: UIViewController {
         static let starImageName = "star"
         static let starFillImageName = "star.fill"
         static let emptyString = ""
-        static let addFavouriteString = "Фильм добавлен в избранное"
-        static let deleteFavouriteString = "Фильм удален из избранного"
         static let baseImageName = "фон5"
         static let watchString = "Смотреть"
     }
@@ -50,7 +48,7 @@ final class InfoMovieViewController: UIViewController {
         collection.backgroundColor = .none
         collection.showsHorizontalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
-
+        
         return collection
     }()
     
@@ -74,13 +72,16 @@ final class InfoMovieViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
     // MARK: - Private Properties
     private let actorView = ActorView()
     private var isPressed = false
     
+    // MARK: - Public Properties
     var idNew: Int?
-
+    var router: Router?
+    var presenter: InfoMovieViewPresenterProtocol?
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,12 +94,8 @@ final class InfoMovieViewController: UIViewController {
     }
     
     // MARK: - Public Method
-    func createPresentImage(image: String?) {
-        
-        guard let imageString = image else { return }
-        let urlString = Constant.firstPartURLString + imageString
-        guard let imageURL = URL(string: urlString) else { return }
-        getImageDataFrom(url: imageURL)
+    func createPresentImage() {
+        presenter?.getImageDataFrom()
     }
     
     // MARK: - Private Method
@@ -115,27 +112,6 @@ final class InfoMovieViewController: UIViewController {
         setButtonConstraints()
     }
     
-    private func getImageDataFrom(url: URL) {
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            
-            if let error = error {
-                print(Constant.errorDataTaskString, error.localizedDescription)
-                return
-            }
-            
-            guard let data = data else {
-                print(Constant.emptyDataString)
-                return
-            }
-            
-            DispatchQueue.main.async {
-                if let image = UIImage(data: data) {
-                    self.movieImageView.image = image
-                }
-            }
-        }.resume()
-    }
-    
     private func createUI() {
         view.backgroundColor = .black
         createBackground()
@@ -150,10 +126,7 @@ final class InfoMovieViewController: UIViewController {
     }
     
     private func addUI() {
-        view.addSubview(nameFilmLabel)
-        view.addSubview(movieImageView)
-        view.addSubview(descpriptionTextView)
-        view.addSubview(goToWebButton)
+        view.addSubviews(nameFilmLabel, movieImageView, descpriptionTextView, goToWebButton)
     }
     
     private func createNavController() {
@@ -161,32 +134,20 @@ final class InfoMovieViewController: UIViewController {
             image: UIImage(systemName: Constant.starImageName),
             style: .done,
             target: self,
-            action: #selector(starAction)
+            action: nil
         )
         navigationItem.rightBarButtonItem?.tintColor = .purple
         navigationController?.navigationBar.tintColor = UIColor.black
-
     }
     
-    @objc private func starAction() {
-        if isPressed == false {
-            showAlert(title: Constant.addFavouriteString, message: Constant.emptyString, handler: nil)
-            navigationItem.rightBarButtonItem?.image = UIImage(systemName: Constant.starFillImageName)
-            isPressed = true
-        } else {
-            showAlert(title: Constant.deleteFavouriteString, message: Constant.emptyString, handler: nil)
-            navigationItem.rightBarButtonItem?.image = UIImage(systemName: Constant.starImageName)
-            isPressed = false
-        }
-    }
-
     private func createCollectionView() {
-        imageCollectionView.register(InfoMovieCell.self, forCellWithReuseIdentifier: Constant.cellIdentifier)
+        imageCollectionView.register(InfoMovieCell.self,
+                                     forCellWithReuseIdentifier: Constant.cellIdentifier)
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
         view.addSubview(imageCollectionView)
     }
-
+    
     private func setImageConstraints() {
         NSLayoutConstraint.activate([
             movieImageView.topAnchor.constraint(equalTo: nameFilmLabel.bottomAnchor, constant: 10),
@@ -204,7 +165,7 @@ final class InfoMovieViewController: UIViewController {
             nameFilmLabel.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
-
+    
     private func setTextViewConstraints() {
         NSLayoutConstraint.activate([
             descpriptionTextView.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 10),
@@ -213,7 +174,7 @@ final class InfoMovieViewController: UIViewController {
             descpriptionTextView.heightAnchor.constraint(equalToConstant: 190)
         ])
     }
-
+    
     private func setCollectionViewConstraints() {
         NSLayoutConstraint.activate([
             imageCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
@@ -231,12 +192,10 @@ final class InfoMovieViewController: UIViewController {
             goToWebButton.widthAnchor.constraint(equalToConstant: 120)
         ])
     }
-
+    
     private func loadMoviesData() {
         actorView.fetchMoviesData(id: idNew) { [weak self] in
-            DispatchQueue.main.async {
-                self?.imageCollectionView.reloadData()
-            }
+            self?.imageCollectionView.reloadData()
         }
     }
     
@@ -249,11 +208,11 @@ final class InfoMovieViewController: UIViewController {
 
 // MARK: - Подписываемся на делегаты UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension InfoMovieViewController: UICollectionViewDelegate,
-    UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+                                   UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         actorView.numberOfRowsInSection(section: section)
     }
-
+    
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
@@ -262,20 +221,31 @@ extension InfoMovieViewController: UICollectionViewDelegate,
             withReuseIdentifier: Constant.cellIdentifier,
             for: indexPath
         ) as? InfoMovieCell else { return UICollectionViewCell() }
-
+        
         let actor = actorView.cellForRowAt(indexPath: indexPath)
         cell.setCellWithValues(actor)
         cell.backgroundColor = .tertiaryLabel
         cell.layer.cornerRadius = 20
-
+        
         return cell
     }
-
+    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         CGSize(width: 200, height: 280)
+    }
+}
+
+extension InfoMovieViewController: InfoMovieViewProtocol {
+    func succes(data: Data) {
+        guard let image = UIImage(data: data) else { return }
+        self.movieImageView.image = image
+    }
+    
+    func failure(error: Error) {
+        showAlert(title: nil, message: error.localizedDescription, handler: nil)
     }
 }

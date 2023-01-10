@@ -25,7 +25,7 @@ final class WKWebViewController: UIViewController, WKNavigationDelegate {
     private let wkWebView = WKWebView()
     
     // MARK: - Private Properties
-    private var apiService = ApiService()
+    private var networkService = NetworkService()
     private var homePage: HomaPageData?
     private var urlString = String()
     
@@ -47,7 +47,7 @@ final class WKWebViewController: UIViewController, WKNavigationDelegate {
     
         let urlPage = Constant.firstPartURLString + String(idMovie) + Constant.secondPartURLString
         urlString = urlPage
-        apiService.getHomePageData(moviesURL: urlPage) { [weak self] result in
+        networkService.getHomePageData(moviesURL: urlPage) { [weak self] result in
 
             switch result {
             case let .success(listOf):

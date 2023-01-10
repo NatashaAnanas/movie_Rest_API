@@ -1,6 +1,7 @@
 // TableViewCell.swift
 // Copyright © RoadMap. All rights reserved.
 
+import SwiftyJSON
 import UIKit
 
 /// Ячейка с фильмом
@@ -58,7 +59,6 @@ final class MovieViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         createUI()
         setConstraints()
     }
@@ -69,7 +69,7 @@ final class MovieViewCell: UITableViewCell {
     }
     
     // MARK: - Public Methods
-    func setCellWithValues(_ movie: Movie) {
+    func configure(movie: Movie) {
         updateUI(
             title: movie.title,
             releaseDate: movie.year,
@@ -78,15 +78,14 @@ final class MovieViewCell: UITableViewCell {
             poster: movie.posterImageURLString,
             id: movie.id,
             posterImage: movie.presentImageURLString)
+        
     }
     
     // MARK: - Private Methods
     private func createUI() {
         backgroundColor = .black
-        addSubview(movieImageView)
+        addSubviews(movieImageView, nameMovieLabel, descpriptionMovieTextView)
         movieImageView.addSubview(rateLabel)
-        addSubview(nameMovieLabel)
-        addSubview(descpriptionMovieTextView)
     }
     
     private func setConstraints() {
@@ -160,29 +159,18 @@ final class MovieViewCell: UITableViewCell {
         
         guard let imageString = poster else { return }
         let urlString = "\(Constant.firstPartURLString)\(imageString)"
-        
-        guard let imageURL = URL(string: urlString) else { return }
-        getImageData(url: imageURL)
+        getImageData(url: urlString)
     }
     
-    private func getImageData(url: URL) {
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            
-            if let error = error {
-                print(Constant.errorDataTaskString, error.localizedDescription)
-                return
+    private func getImageData(url: String) {
+        PhotoLoadService().fetchImage(imageUrl: url) { result in
+            switch result {
+            case .success(let success):
+                guard let image = UIImage(data: success) else { return }
+                self.movieImageView.image = image
+            case .failure(let failure):
+                print(failure.localizedDescription)
             }
-            
-            guard let data = data else {
-                print(Constant.emptyDataString)
-                return
-            }
-            
-            DispatchQueue.main.async {
-                if let image = UIImage(data: data) {
-                    self.movieImageView.image = image
-                }
-            }
-        }.resume()
+        }
     }
 }

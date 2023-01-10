@@ -2,9 +2,11 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
+import SwiftyJSON
 
 /// Модель массив Актеры
 struct ActorData: Decodable {
+    /// массив актеров
     let actors: [Actor]
 
     private enum CodingKeys: String, CodingKey {
@@ -14,8 +16,15 @@ struct ActorData: Decodable {
 
 /// Модель Актеры
 struct Actor: Decodable {
-    let name: String?
-    let actorImageURLString: String?
+    /// имя актера
+    var name: String?
+    /// фото актера
+    var actorImageURLString: String?
+    
+    init(json: JSON) {
+        name = json["name"].string
+        actorImageURLString = json["profile_path"].string
+    }
 
     private enum CodingKeys: String, CodingKey {
         case name

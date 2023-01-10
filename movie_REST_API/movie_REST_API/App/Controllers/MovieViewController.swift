@@ -3,6 +3,8 @@
 
 import UIKit
 
+typealias VoidHandler = (() -> ())
+
 /// Главная страница c фильмами
 final class MovieViewController: UIViewController {
     
@@ -42,7 +44,7 @@ final class MovieViewController: UIViewController {
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-
+    
     private let popularButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 10
@@ -51,16 +53,16 @@ final class MovieViewController: UIViewController {
         button.layer.shadowRadius = 9.0
         button.layer.shadowOpacity = 0.8
         button.layer.shadowOffset = CGSize(width: 2.5, height: 2.5)
-
+        
         button.backgroundColor = .systemBlue
         button.setTitle(Constant.allFilmString, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.tag = 0
         button.translatesAutoresizingMaskIntoConstraints = false
-
+        
         return button
     }()
-
+    
     private let rateButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 10
@@ -73,11 +75,11 @@ final class MovieViewController: UIViewController {
         button.setTitleColor(UIColor.black, for: .normal)
         button.tag = 1
         button.translatesAutoresizingMaskIntoConstraints = false
-
+        
         return button
     }()
-
-    private let tableView: UITableView = {
+    
+    private let movieTableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundView = UIImageView(image: UIImage(named: Constant.baseImageName))
         tableView.register(MovieViewCell.self, forCellReuseIdentifier: Constant.filmIdentifier)
@@ -88,71 +90,32 @@ final class MovieViewController: UIViewController {
     
     // MARK: - Private Properties
     private var isPressed = true
-    private var movieViewModel = MovieView()
 
+    // MARK: - Public Properties
+    var router: Router?
+    var presenter: MainViewPresenterProtocol?
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         createUI()
         setupTableViewDelegats()
-        setupAction()
         setConstraint()
-        loadMoviesData()
     }
-
+    
     // MARK: - Private Method
-    private func setupAction() {
-        popularButton.addTarget(self, action: #selector(chooseMovieButtonAction(sender:)), for: .touchUpInside)
-        rateButton.addTarget(self, action: #selector(chooseMovieButtonAction(sender:)), for: .touchUpInside)
-    }
-
-    @objc private func chooseMovieButtonAction(sender: UIButton) {
-        
-        if isPressed {
-            popularButton.backgroundColor = .systemCyan
-            rateButton.backgroundColor = .systemBlue
-            isPressed = false
-        } else {
-            popularButton.backgroundColor = .systemBlue
-            rateButton.backgroundColor = .systemCyan
-            isPressed = true
-        }
-        
-        switch sender.tag {
-        case 0:
-            let url = Constant.allFilmURLString
-            movieViewModel.urlMovie = url
-            loadMoviesData()
-
-        case 1:
-            let url = Constant.popularFilmURLString
-            movieViewModel.urlMovie = url
-            loadMoviesData()
-        default:
-            break
-        }
-    }
-
-    private func loadMoviesData() {
-        movieViewModel.fetchMoviesData { [weak self] in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-            }
-        }
+    
+    private func goToInfoVC(indexPath: IndexPath) {
+        guard let movie = presenter?.cellForRowAt(indexPath: indexPath) else { return }
+        presenter?.tapOnTheMovie(movie: movie)
     }
     
     private func createUI() {
         title = Constant.filmsString
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:
                                                                     UIColor.black]
-        
         createBackgroundImage()
-        
-        view.addSubview(baseImageView)
-        view.addSubview(tableView)
-        view.addSubview(popularButton)
-        view.addSubview(rateButton)
-        view.addSubview(newButton)
+        view.addSubviews(baseImageView, movieTableView, popularButton, rateButton, newButton)
     }
     
     private func createBackgroundImage() {
@@ -161,10 +124,10 @@ final class MovieViewController: UIViewController {
         backgroundImage.contentMode = .scaleAspectFill
         view.insertSubview(backgroundImage, at: 0)
     }
-
+    
     private func setupTableViewDelegats() {
-        tableView.delegate = self
-        tableView.dataSource = self
+        movieTableView.delegate = self
+        movieTableView.dataSource = self
     }
     
     private func setConstraint() {
@@ -173,16 +136,16 @@ final class MovieViewController: UIViewController {
         setConstraintImage()
         setConstraintNewButton()
     }
-
+    
     private func setConstraintTableView() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: baseImageView.bottomAnchor, constant: 5),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+            movieTableView.topAnchor.constraint(equalTo: baseImageView.bottomAnchor, constant: 5),
+            movieTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            movieTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            movieTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         ])
     }
-
+    
     private func setConstraintButtons() {
         NSLayoutConstraint.activate([
             popularButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 90),
@@ -190,7 +153,7 @@ final class MovieViewController: UIViewController {
             popularButton.widthAnchor.constraint(equalToConstant: 150),
             popularButton.heightAnchor.constraint(equalToConstant: 40),
         ])
-
+        
         NSLayoutConstraint.activate([
             rateButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 90),
             rateButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
@@ -205,7 +168,7 @@ final class MovieViewController: UIViewController {
             baseImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             baseImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             baseImageView.heightAnchor.constraint(equalToConstant: 200)
-            ])
+        ])
     }
     
     private func setConstraintNewButton() {
@@ -214,41 +177,43 @@ final class MovieViewController: UIViewController {
             newButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             newButton.heightAnchor.constraint(equalToConstant: 35),
             newButton.widthAnchor.constraint(equalToConstant: 120)
-            ])
+        ])
     }
 }
 
 // MARK: - Подписываемся на делегаты UITableViewDelegate, UITableViewDataSource
 extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        movieViewModel.numberOfRowsInSection(section: section)
+        presenter?.numberOfRowsInSection(section: section) ?? 0
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: Constant.filmIdentifier,
             for: indexPath
         ) as? MovieViewCell else { return UITableViewCell() }
 
-        let movie = movieViewModel.cellForRowAt(indexPath: indexPath)
-        cell.setCellWithValues(movie)
+        guard let movie = presenter?.cellForRowAt(indexPath: indexPath) else { return UITableViewCell() }
+        cell.configure(movie: movie)
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: UIScreen.main.bounds.width)
         cell.selectionStyle = .none
         cell.backgroundColor = .none
         return cell
     }
     
-    private func goToInfoVC(indexPath: IndexPath) {
-        let secondVC = InfoMovieViewController()
-        let movie = movieViewModel.cellForRowAt(indexPath: indexPath)
-        secondVC.idNew = movie.id
-        secondVC.createPresentImage(image: movie.presentImageURLString)
-        secondVC.descpriptionTextView.text = movie.description
-        secondVC.nameFilmLabel.text = movie.title
-        navigationController?.pushViewController(secondVC, animated: true)
-    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         goToInfoVC(indexPath: indexPath)
+    }
+}
+
+// MARK: - Подписываемся на протокол MainViewProtocol
+extension MovieViewController: MainViewProtocol {
+    
+    func succes() {
+        movieTableView.reloadData()
+    }
+    
+    func failure(error: Error) {
+        showAlert(title: nil, message: error.localizedDescription, handler: nil)
     }
 }

@@ -14,7 +14,7 @@ final class ActorView {
     }
     
     // MARK: - Private Properties
-    private let apiService = ApiService()
+    private let networkService = NetworkService()
     private var actors: [Actor] = []
 
     // MARK: - Public Method
@@ -22,12 +22,11 @@ final class ActorView {
         
         guard let idMovie = id else { return }
         let urlActor = "\(Constant.firstPartURLString)\(String(idMovie))\(Constant.secondPartURLString)"
-        apiService.getActorData(actorURL: urlActor) { [weak self] result in
-
+        
+        networkService.getActorData(actorURL: urlActor) { [weak self] result in
             switch result {
-            case let .success(listOf):
-                guard let list = listOf else { return }
-                self?.actors = list.actors
+            case let .success(actors):
+                self?.actors = actors
                 completion()
             case let .failure(error):
                 print(Constant.errorString, error)

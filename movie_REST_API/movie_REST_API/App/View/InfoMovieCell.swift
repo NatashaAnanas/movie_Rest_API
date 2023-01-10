@@ -1,6 +1,7 @@
 // SecondViewCell.swift
 // Copyright © RoadMap. All rights reserved.
 
+import SwiftyJSON
 import UIKit
 
 /// Ячейка с фотографиями актеров
@@ -36,9 +37,7 @@ final class InfoMovieCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addSubview(personLabel)
-        addSubview(personImageView)
+        addSubviews(personLabel, personImageView)
         setConstraintsImage()
         setConstraintsLabel()
     }
@@ -46,6 +45,11 @@ final class InfoMovieCell: UICollectionViewCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError(Constant.fatalErrorString)
+    }
+    
+    // MARK: - Public Method
+    func setCellWithValues(_ actors: Actor) {
+        updateUI(actorImage: actors.actorImageURLString, name: actors.name)
     }
     
     // MARK: - Private Method
@@ -67,39 +71,24 @@ final class InfoMovieCell: UICollectionViewCell {
         ])
     }
     
-    func setCellWithValues(_ actors: Actor) {
-        updateUI(actorImage: actors.actorImageURLString, name: actors.name)
-    }
-    
     private func updateUI(actorImage: String?, name: String?) {
         personLabel.text = name
         
         guard let imageString = actorImage else { return }
         let urlString = "\(Constant.firstPartURLString)\(imageString)"
         
-        guard let imageURL = URL(string: urlString) else { return }
-        
-        getImageData(url: imageURL)
+        getImageData(url: urlString)
     }
     
-    private func getImageData(url: URL) {
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            
-            if let error = error {
-                print(Constant.errorDataTaskString, error.localizedDescription)
-                return
+    private func getImageData(url: String) {
+        PhotoLoadService().fetchImage(imageUrl: url) { result in
+            switch result {
+            case .success(let success):
+                guard let image = UIImage(data: success) else { return }
+                self.personImageView.image = image
+            case .failure(let failure):
+                print(failure.localizedDescription)
             }
-            
-            guard let data = data else {
-                print(Constant.emptyDataString)
-                return
-            }
-            
-            DispatchQueue.main.async {
-                if let image = UIImage(data: data) {
-                    self.personImageView.image = image
-                }
-            }
-        }.resume()
+        }
     }
 }
