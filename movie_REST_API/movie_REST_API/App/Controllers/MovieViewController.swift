@@ -14,10 +14,6 @@ final class MovieViewController: UIViewController {
         static let allFilmString = "Все фильмы"
         static let popularFilmString = "Популярное"
         static let filmsString = "Фильмы"
-        static let allFilmURLString =
-            "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
-        static let popularFilmURLString =
-            "https://api.themoviedb.org/3/movie/top_rated?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
         static let baseImageName = "фон4"
         static let baseImageFilmName = "film"
         static let newFilmString = "Новинки"
@@ -97,7 +93,6 @@ final class MovieViewController: UIViewController {
 
     // MARK: - Public Properties
 
-    var router: Router?
     var presenter: MainViewPresenterProtocol?
 
     // MARK: - Life cycle
@@ -111,9 +106,9 @@ final class MovieViewController: UIViewController {
 
     // MARK: - Private Methods
 
-    private func goToInfoVC(indexPath: IndexPath) {
+    private func didSelectInfo(indexPath: IndexPath) {
         guard let movie = presenter?.cellForRowAt(indexPath: indexPath) else { return }
-        presenter?.tapOnTheMovie(movie: movie)
+        presenter?.onTap(movie: movie)
     }
 
     private func createUI() {
@@ -122,11 +117,11 @@ final class MovieViewController: UIViewController {
             NSAttributedString.Key.foregroundColor:
                 UIColor.black
         ]
-        createBackgroundImage()
+        createBackgroundImageView()
         view.addSubviews(baseImageView, movieTableView, popularButton, rateButton, newButton)
     }
 
-    private func createBackgroundImage() {
+    private func createBackgroundImageView() {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(named: Constants.baseImageName)
         backgroundImage.contentMode = .scaleAspectFill
@@ -193,7 +188,7 @@ final class MovieViewController: UIViewController {
 
 extension MovieViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter?.numberOfRowsInSection(section: section) ?? 0
+        presenter?.numberOfRowsIn(section: section) ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -215,7 +210,7 @@ extension MovieViewController: UITableViewDataSource {
 
 extension MovieViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        goToInfoVC(indexPath: indexPath)
+        didSelectInfo(indexPath: indexPath)
     }
 }
 

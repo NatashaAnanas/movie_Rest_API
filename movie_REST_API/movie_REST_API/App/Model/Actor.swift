@@ -4,30 +4,15 @@
 import Foundation
 import SwiftyJSON
 
-/// Модель массив Актеры
-struct ActorData: Decodable {
-    /// массив актеров
-    let actors: [Actor]
-
-    private enum CodingKeys: String, CodingKey {
-        case actors = "cast"
-    }
-}
-
 /// Модель Актеры
-struct Actor: Decodable {
-    /// имя актера
+struct Actor {
+    /// Имя актера
     var name: String?
-    /// фото актера
+    /// Фото актера
     var actorImageURLString: String?
 
     init(json: JSON) {
         name = json["name"].string
         actorImageURLString = json["profile_path"].string
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case name
-        case actorImageURLString = "profile_path"
     }
 }

@@ -16,7 +16,10 @@ protocol NetworkServiceProtocol {
 final class NetworkService: NetworkServiceProtocol {
     // MARK: - Private Constant
 
-    private enum Constant {
+    enum Constant {
+        static let allFilmURLString =
+            "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
+        static let firstPartURLString = "https://image.tmdb.org/t/p/w500"
         static let errorDataTaskString = "DataTask error: "
         static let emptyResponseString = "Empty Response"
         static let statusCodeString = "Response status code: "
@@ -56,9 +59,10 @@ final class NetworkService: NetworkServiceProtocol {
         }
     }
 
-    func fetchHomePageData(moviesURL: String, completion: @escaping (Result<HomaPageData?, Error>) -> ()) {
-        fetchData(url: moviesURL, completion: completion)
-    }
+//
+//    func fetchHomePageData(moviesURL: String, completion: @escaping (Result<HomaPageData?, Error>) -> ()) {
+//        fetchData(url: moviesURL, completion: completion)
+//    }
 
     func fetchImage(imageUrl: String, completion: @escaping (Result<Data?, Error>) -> ()) {
         fetchData(url: imageUrl, completion: completion)

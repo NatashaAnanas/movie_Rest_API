@@ -3,18 +3,20 @@
 
 import Foundation
 
+/// Протокол для MovieViewController
 protocol MainViewProtocol: AnyObject {
     func succes()
     func failure(error: Error)
 }
 
+/// Протокол презентера главного экрана со списком фильмов
 protocol MainViewPresenterProtocol: AnyObject {
-    var movies: [Movie]? { get set }
+    var movie: [Movie]? { get set }
     var urlMovie: String { get set }
     init(view: MainViewProtocol, networkService: NetworkServiceProtocol, urlMovie: String, router: RouterProtocol)
     func fetchMoviesData()
-    func tapOnTheMovie(movie: Movie)
-    func numberOfRowsInSection(section: Int) -> Int
+    func onTap(movie: Movie)
+    func numberOfRowsIn(section: Int) -> Int
     func cellForRowAt(indexPath: IndexPath) -> Movie
 }
 
@@ -24,7 +26,7 @@ final class MainPresenter: MainViewPresenterProtocol {
 
     let networkService: NetworkServiceProtocol?
     var urlMovie: String
-    var movies: [Movie]?
+    var movie: [Movie]?
     var router: RouterProtocol?
     weak var view: MainViewProtocol?
 
@@ -49,7 +51,7 @@ final class MainPresenter: MainViewPresenterProtocol {
         networkService?.fetchMoviesData(moviesURL: urlMovie) { [weak self] result in
             switch result {
             case let .success(movies):
-                self?.movies = movies
+                self?.movie = movies
                 self?.view?.succes()
             case let .failure(error):
                 self?.view?.failure(error: error)
@@ -58,8 +60,8 @@ final class MainPresenter: MainViewPresenterProtocol {
         }
     }
 
-    func numberOfRowsInSection(section: Int) -> Int {
-        guard let movies = movies else { return 0 }
+    func numberOfRowsIn(section: Int) -> Int {
+        guard let movies = movie else { return 0 }
         if movies.count != 0 {
             return movies.count
         }
@@ -67,11 +69,11 @@ final class MainPresenter: MainViewPresenterProtocol {
     }
 
     func cellForRowAt(indexPath: IndexPath) -> Movie {
-        guard let movies = movies else { return Movie(json: nil) }
+        guard let movies = movie else { return Movie(json: nil) }
         return movies[indexPath.row]
     }
 
-    func tapOnTheMovie(movie: Movie) {
-        router?.showCurrentMovieVC(movie: movie)
+    func onTap(movie: Movie) {
+        router?.showCurrent(movie: movie)
     }
 }

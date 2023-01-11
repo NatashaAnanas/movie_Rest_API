@@ -8,7 +8,7 @@ protocol RouterProtocol {
     var navigationController: UINavigationController? { get set }
     var builder: AssembleBuilderProtocol? { get set }
     func initialViewController()
-    func showCurrentMovieVC(movie: Movie)
+    func showCurrent(movie: Movie)
     func popToRoot()
 }
 
@@ -35,7 +35,7 @@ final class Router: RouterProtocol {
         }
     }
 
-    func showCurrentMovieVC(movie: Movie) {
+    func showCurrent(movie: Movie) {
         if let navigationController = navigationController {
             guard let infoMovieVC = builder?.makeInfoMovieModule(router: self, movie: movie) else { return }
             navigationController.pushViewController(infoMovieVC, animated: true)

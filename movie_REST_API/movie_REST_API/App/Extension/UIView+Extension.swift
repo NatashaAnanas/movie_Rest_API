@@ -4,7 +4,7 @@
 import UIKit
 
 /// Расширение для добавления UIView элементов
-public extension UIView {
+extension UIView {
     func addSubviews(_ views: UIView...) {
         for view in views {
             addSubview(view)

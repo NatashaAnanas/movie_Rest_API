@@ -10,7 +10,6 @@ final class InfoMovieCell: UICollectionViewCell {
 
     private enum Constant {
         static let fatalErrorString = "init(coder:) has not been implemented"
-        static let firstPartURLString = "https://image.tmdb.org/t/p/w500"
         static let errorDataTaskString = "DataTask error: "
         static let emptyDataString = "Empty Data"
     }
@@ -80,17 +79,17 @@ final class InfoMovieCell: UICollectionViewCell {
         personLabel.text = name
 
         guard let imageString = actorImage else { return }
-        let urlString = "\(Constant.firstPartURLString)\(imageString)"
+        let urlString = "\(PhotoLoadService.Constant.firstPartURLString)\(imageString)"
 
         getImageData(url: urlString)
     }
 
     private func getImageData(url: String) {
-        PhotoLoadService().fetchImage(imageUrl: url) { result in
+        PhotoLoadService().fetchImage(imageUrl: url) { [weak self] result in
             switch result {
             case let .success(success):
                 guard let image = UIImage(data: success) else { return }
-                self.personImageView.image = image
+                self?.personImageView.image = image
             case let .failure(failure):
                 print(failure.localizedDescription)
             }

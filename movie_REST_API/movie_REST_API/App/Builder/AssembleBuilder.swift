@@ -8,12 +8,6 @@ protocol AssembleBuilderProtocol {
     func makeInfoMovieModule(router: RouterProtocol, movie: Movie) -> UIViewController
 }
 
-private enum Constants {
-    static let allFilmURLString =
-        "https://api.themoviedb.org/3/movie/popular?api_key=74b256bd9644791fa138aeb51482b3b8&language=en-US&page=1"
-    static let firstPartURLString = "https://image.tmdb.org/t/p/w500"
-}
-
 /// AssembleBulder
 final class AssembleBuilder: AssembleBuilderProtocol {
     // MARK: - Public Methods
@@ -24,7 +18,7 @@ final class AssembleBuilder: AssembleBuilderProtocol {
         let presenter = MainPresenter(
             view: view,
             networkService: networkService,
-            urlMovie: Constants.allFilmURLString,
+            urlMovie: NetworkService.Constant.allFilmURLString,
             router: router
         )
         view.presenter = presenter
@@ -35,7 +29,7 @@ final class AssembleBuilder: AssembleBuilderProtocol {
         let networkService = NetworkService()
         let photoLoadService = PhotoLoadService()
         let view = InfoMovieViewController()
-        view.idNew = movie.id
+//        view.idNew = movie.id
         view.createPresentImage()
         view.descpriptionTextView.text = movie.description
         view.nameFilmLabel.text = movie.title
@@ -45,7 +39,8 @@ final class AssembleBuilder: AssembleBuilderProtocol {
             networkService: networkService,
             photoLoadService: photoLoadService,
             router: router,
-            movies: movie
+            movies: movie,
+            id: movie.id ?? 0
         )
         view.presenter = presenter
         return view

@@ -10,6 +10,12 @@ protocol PhotoLoadServiceProtocol {
 
 /// Сервис загрузки фотографий
 final class PhotoLoadService: PhotoLoadServiceProtocol {
+    // MARK: - Private Constant
+
+    enum Constant {
+        static let firstPartURLString = "https://image.tmdb.org/t/p/w500"
+    }
+
     // MARK: - Public Methods
 
     func fetchImage(imageUrl: String, completion: @escaping (Result<Data, Error>) -> ()) {

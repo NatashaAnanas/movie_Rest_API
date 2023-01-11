@@ -3,8 +3,8 @@
 
 import Foundation
 
-/// Модель HomaPageData
-struct HomaPageData: Decodable {
-    /// Ссылка на сайт
-    let homepage: String?
-}
+// Модель HomaPageData
+// struct HomaPageData: Decodable {
+//    /// Ссылка на сайт
+//    let homepage: String?
+// }

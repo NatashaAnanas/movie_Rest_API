@@ -3,38 +3,26 @@
 
 import Foundation
 
+/// Протокол для InfoMovieViewController
 protocol InfoMovieViewProtocol: AnyObject {
     func succes(data: Data)
     func failure(error: Error)
 }
 
+/// Протокол презентера экрана с описанием фильмов
 protocol InfoMovieViewPresenterProtocol: AnyObject {
-    var movies: Movie { get set }
-    init(
-        view: InfoMovieViewProtocol,
-        networkService: NetworkServiceProtocol,
-        photoLoadService: PhotoLoadServiceProtocol,
-        router: RouterProtocol,
-        movies: Movie
-    )
-    func getImageDataFrom()
+    var movie: Movie { get set }
+    func fetchImageDataFrom()
 }
 
 /// Презентер экрана с описанием фильмов
 final class InfoMoviePresenter: InfoMovieViewPresenterProtocol {
-    // MARK: - Private Constant
-
-    private enum Constant {
-        static let firstPartURLString = "https://image.tmdb.org/t/p/w500"
-        static let emptyString = ""
-    }
-
     // MARK: - Public Properties
 
     let networkService: NetworkServiceProtocol?
     let photoLoadService: PhotoLoadServiceProtocol?
     var router: RouterProtocol
-    var movies: Movie
+    var movie: Movie
     weak var view: InfoMovieViewProtocol?
 
     // MARK: Init
@@ -44,21 +32,22 @@ final class InfoMoviePresenter: InfoMovieViewPresenterProtocol {
         networkService: NetworkServiceProtocol,
         photoLoadService: PhotoLoadServiceProtocol,
         router: RouterProtocol,
-        movies: Movie
+        movies: Movie,
+        id: Int
     ) {
         self.view = view
         self.networkService = networkService
         self.photoLoadService = photoLoadService
         self.router = router
-        self.movies = movies
-        getImageDataFrom()
+        movie = movies
+        fetchImageDataFrom()
     }
 
     // MARK: - Public Methods
 
-    func getImageDataFrom() {
-        guard let presentImageURLString = movies.presentImageURLString else { return }
-        let url = "\(Constant.firstPartURLString)\(presentImageURLString)"
+    func fetchImageDataFrom() {
+        guard let presentImageURLString = movie.presentImageURLString else { return }
+        let url = "\(PhotoLoadService.Constant.firstPartURLString)\(presentImageURLString)"
         photoLoadService?.fetchImage(imageUrl: url, completion: { [weak self] result in
             switch result {
             case let .success(data):
