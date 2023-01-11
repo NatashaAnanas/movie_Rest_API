@@ -32,8 +32,7 @@ final class InfoMoviePresenter: InfoMovieViewPresenterProtocol {
         networkService: NetworkServiceProtocol,
         photoLoadService: PhotoLoadServiceProtocol,
         router: RouterProtocol,
-        movies: Movie,
-        id: Int
+        movies: Movie
     ) {
         self.view = view
         self.networkService = networkService

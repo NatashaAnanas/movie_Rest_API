@@ -29,7 +29,6 @@ final class AssembleBuilder: AssembleBuilderProtocol {
         let networkService = NetworkService()
         let photoLoadService = PhotoLoadService()
         let view = InfoMovieViewController()
-//        view.idNew = movie.id
         view.createPresentImage()
         view.descpriptionTextView.text = movie.description
         view.nameFilmLabel.text = movie.title
@@ -39,8 +38,7 @@ final class AssembleBuilder: AssembleBuilderProtocol {
             networkService: networkService,
             photoLoadService: photoLoadService,
             router: router,
-            movies: movie,
-            id: movie.id ?? 0
+            movies: movie
         )
         view.presenter = presenter
         return view
