@@ -21,7 +21,7 @@ protocol InfoMovieViewPresenterProtocol: AnyObject {
 }
 
 /// Презентер экрана с описанием фильмов
-class InfoMoviePresenter: InfoMovieViewPresenterProtocol {
+final class InfoMoviePresenter: InfoMovieViewPresenterProtocol {
     // MARK: - Private Constant
 
     private enum Constant {
@@ -36,6 +36,8 @@ class InfoMoviePresenter: InfoMovieViewPresenterProtocol {
     var router: RouterProtocol
     var movies: Movie
     weak var view: InfoMovieViewProtocol?
+
+    // MARK: Init
 
     required init(
         view: InfoMovieViewProtocol,

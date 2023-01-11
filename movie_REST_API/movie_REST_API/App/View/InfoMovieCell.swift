@@ -36,6 +36,8 @@ final class InfoMovieCell: UICollectionViewCell {
         return label
     }()
 
+    // MARK: Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews(personLabel, personImageView)
@@ -48,13 +50,13 @@ final class InfoMovieCell: UICollectionViewCell {
         fatalError(Constant.fatalErrorString)
     }
 
-    // MARK: - Public Method
+    // MARK: - Public Methods
 
     func setCellWithValues(_ actors: Actor) {
         updateUI(actorImage: actors.actorImageURLString, name: actors.name)
     }
 
-    // MARK: - Private Method
+    // MARK: - Private Methods
 
     private func setConstraintsImage() {
         NSLayoutConstraint.activate([

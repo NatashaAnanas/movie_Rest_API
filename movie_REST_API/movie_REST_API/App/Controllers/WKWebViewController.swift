@@ -9,7 +9,7 @@ import WebKit
 final class WKWebViewController: UIViewController, WKNavigationDelegate {
     // MARK: - Private Constant
 
-    private enum Constant {
+    private enum Constants {
         static let backName = "chevron.left"
         static let forwardName = "chevron.forward"
         static let firstPartURLString = "https://api.themoviedb.org/3/movie/"
@@ -35,17 +35,21 @@ final class WKWebViewController: UIViewController, WKNavigationDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+    }
+
+    // MARK: - Private Methods
+
+    private func setupUI() {
         createWkWebView()
         addConstraintWkWebView()
         fetchHomePageData(id: id) {}
     }
 
-    // MARK: - Private Method
-
     private func fetchHomePageData(id: Int?, completion: @escaping () -> ()) {
         guard let idMovie = id else { return }
 
-        let urlPage = Constant.firstPartURLString + String(idMovie) + Constant.secondPartURLString
+        let urlPage = Constants.firstPartURLString + String(idMovie) + Constants.secondPartURLString
         urlString = urlPage
         networkService.getHomePageData(moviesURL: urlPage) { [weak self] result in
 
@@ -56,7 +60,7 @@ final class WKWebViewController: UIViewController, WKNavigationDelegate {
                 self?.getURL(url: list)
                 completion()
             case let .failure(error):
-                print(Constant.errorString, error)
+                print(Constants.errorString, error)
             }
         }
     }

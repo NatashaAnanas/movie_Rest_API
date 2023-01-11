@@ -19,7 +19,7 @@ protocol MainViewPresenterProtocol: AnyObject {
 }
 
 /// Презентер главного экрана со списком фильмов
-class MainPresenter: MainViewPresenterProtocol {
+final class MainPresenter: MainViewPresenterProtocol {
     // MARK: - Public Properties
 
     let networkService: NetworkServiceProtocol?
@@ -27,6 +27,8 @@ class MainPresenter: MainViewPresenterProtocol {
     var movies: [Movie]?
     var router: RouterProtocol?
     weak var view: MainViewProtocol?
+
+    // MARK: Init
 
     required init(
         view: MainViewProtocol,

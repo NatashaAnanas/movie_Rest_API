@@ -7,9 +7,9 @@ typealias VoidHandler = () -> ()
 
 /// Главная страница c фильмами
 final class MovieViewController: UIViewController {
-    // MARK: - Private Constant
+    // MARK: - Private Constants
 
-    private enum Constant {
+    private enum Constants {
         static let filmIdentifier = "film"
         static let allFilmString = "Все фильмы"
         static let popularFilmString = "Популярное"
@@ -28,7 +28,7 @@ final class MovieViewController: UIViewController {
     private let newButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemGreen
-        button.setTitle(Constant.newFilmString, for: .normal)
+        button.setTitle(Constants.newFilmString, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button.layer.cornerRadius = 15
@@ -40,7 +40,7 @@ final class MovieViewController: UIViewController {
     private let baseImageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
-        image.image = UIImage(named: Constant.baseImageFilmName)
+        image.image = UIImage(named: Constants.baseImageFilmName)
         image.layer.cornerRadius = 15
         image.clipsToBounds = true
         image.contentMode = .scaleAspectFill
@@ -58,7 +58,7 @@ final class MovieViewController: UIViewController {
         button.layer.shadowOffset = CGSize(width: 2.5, height: 2.5)
 
         button.backgroundColor = .systemBlue
-        button.setTitle(Constant.allFilmString, for: .normal)
+        button.setTitle(Constants.allFilmString, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.tag = 0
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +74,7 @@ final class MovieViewController: UIViewController {
         button.layer.shadowOpacity = 0.8
         button.layer.shadowOffset = CGSize(width: 2.5, height: 2.5)
         button.backgroundColor = .systemCyan
-        button.setTitle(Constant.popularFilmString, for: .normal)
+        button.setTitle(Constants.popularFilmString, for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.tag = 1
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -84,8 +84,8 @@ final class MovieViewController: UIViewController {
 
     private let movieTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundView = UIImageView(image: UIImage(named: Constant.baseImageName))
-        tableView.register(MovieViewCell.self, forCellReuseIdentifier: Constant.filmIdentifier)
+        tableView.backgroundView = UIImageView(image: UIImage(named: Constants.baseImageName))
+        tableView.register(MovieViewCell.self, forCellReuseIdentifier: Constants.filmIdentifier)
         tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
@@ -109,7 +109,7 @@ final class MovieViewController: UIViewController {
         setConstraint()
     }
 
-    // MARK: - Private Method
+    // MARK: - Private Methods
 
     private func goToInfoVC(indexPath: IndexPath) {
         guard let movie = presenter?.cellForRowAt(indexPath: indexPath) else { return }
@@ -117,7 +117,7 @@ final class MovieViewController: UIViewController {
     }
 
     private func createUI() {
-        title = Constant.filmsString
+        title = Constants.filmsString
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor:
                 UIColor.black
@@ -128,7 +128,7 @@ final class MovieViewController: UIViewController {
 
     private func createBackgroundImage() {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: Constant.baseImageName)
+        backgroundImage.image = UIImage(named: Constants.baseImageName)
         backgroundImage.contentMode = .scaleAspectFill
         view.insertSubview(backgroundImage, at: 0)
     }
@@ -189,16 +189,16 @@ final class MovieViewController: UIViewController {
     }
 }
 
-// MARK: - Подписываемся на делегаты UITableViewDelegate, UITableViewDataSource
+// MARK: - UITableViewDataSource
 
-extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
+extension MovieViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter?.numberOfRowsInSection(section: section) ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: Constant.filmIdentifier,
+            withIdentifier: Constants.filmIdentifier,
             for: indexPath
         ) as? MovieViewCell else { return UITableViewCell() }
 
@@ -209,7 +209,11 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
         cell.backgroundColor = .none
         return cell
     }
+}
 
+// MARK: - UITableViewDelegate
+
+extension MovieViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         goToInfoVC(indexPath: indexPath)
     }

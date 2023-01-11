@@ -1,11 +1,11 @@
-// AssembleBulder.swift
+// AssembleBuilder.swift
 // Copyright © RoadMap. All rights reserved.
 
 import UIKit
 
-protocol AssembleBulderProtocol {
-    func createMovieModul(router: RouterProtocol) -> UIViewController
-    func createInfoMovieModul(router: RouterProtocol, movie: Movie) -> UIViewController
+protocol AssembleBuilderProtocol {
+    func createMovieModule(router: RouterProtocol) -> UIViewController
+    func createInfoMovieModule(router: RouterProtocol, movie: Movie) -> UIViewController
 }
 
 private enum Constants {
@@ -15,10 +15,10 @@ private enum Constants {
 }
 
 /// AssembleBulder
-class AssembleBulder: AssembleBulderProtocol {
-    // MARK: - Public Method
+final class AssembleBuilder: AssembleBuilderProtocol {
+    // MARK: - Public Methods
 
-    func createMovieModul(router: RouterProtocol) -> UIViewController {
+    func createMovieModule(router: RouterProtocol) -> UIViewController {
         let networkService = NetworkService()
         let view = MovieViewController()
         let presenter = MainPresenter(
@@ -31,7 +31,7 @@ class AssembleBulder: AssembleBulderProtocol {
         return view
     }
 
-    func createInfoMovieModul(router: RouterProtocol, movie: Movie) -> UIViewController {
+    func createInfoMovieModule(router: RouterProtocol, movie: Movie) -> UIViewController {
         let networkService = NetworkService()
         let photoLoadService = PhotoLoadService()
         let view = InfoMovieViewController()

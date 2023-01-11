@@ -4,7 +4,7 @@
 import UIKit
 
 /// SceneDelegate
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(
@@ -17,8 +17,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScence
 
         let navigationController = UINavigationController()
-        let assembleBulder = AssembleBulder()
-        let router = Router(navigationController: navigationController, builder: assembleBulder)
+        let assembleBuilder = AssembleBuilder()
+        let router = Router(navigationController: navigationController, builder: assembleBuilder)
         router.initialViewController()
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()

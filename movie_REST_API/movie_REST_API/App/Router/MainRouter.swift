@@ -6,22 +6,22 @@ import UIKit
 /// Протокол роутера
 protocol RouterProtocol {
     var navigationController: UINavigationController? { get set }
-    var builder: AssembleBulderProtocol? { get set }
+    var builder: AssembleBuilderProtocol? { get set }
     func initialViewController()
     func showCurrentMovieVC(movie: Movie)
     func popToRoot()
 }
 
 /// Роутер
-class Router: RouterProtocol {
+final class Router: RouterProtocol {
     // MARK: - Public Properties
 
     var navigationController: UINavigationController?
-    var builder: AssembleBulderProtocol?
+    var builder: AssembleBuilderProtocol?
 
     // MARK: - Init
 
-    init(navigationController: UINavigationController, builder: AssembleBulderProtocol) {
+    init(navigationController: UINavigationController, builder: AssembleBuilderProtocol) {
         self.navigationController = navigationController
         self.builder = builder
     }
@@ -30,14 +30,14 @@ class Router: RouterProtocol {
 
     func initialViewController() {
         if let navigationController = navigationController {
-            guard let movieVC = builder?.createMovieModul(router: self) else { return }
+            guard let movieVC = builder?.createMovieModule(router: self) else { return }
             navigationController.viewControllers = [movieVC]
         }
     }
 
     func showCurrentMovieVC(movie: Movie) {
         if let navigationController = navigationController {
-            guard let infoMovieVC = builder?.createInfoMovieModul(router: self, movie: movie) else { return }
+            guard let infoMovieVC = builder?.createInfoMovieModule(router: self, movie: movie) else { return }
             navigationController.pushViewController(infoMovieVC, animated: true)
         }
     }

@@ -28,7 +28,7 @@
 		417606D3296C8B4F004665E9 /* PhotoLoadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417606D2296C8B4F004665E9 /* PhotoLoadService.swift */; };
 		417606D7296C9466004665E9 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417606D6296C9466004665E9 /* UIView+Extension.swift */; };
 		417606DA296C9E73004665E9 /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417606D9296C9E73004665E9 /* MainPresenter.swift */; };
-		41EE31EA296DA8A7005A0EAE /* AssembleBulder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE31E9296DA8A7005A0EAE /* AssembleBulder.swift */; };
+		41EE31EA296DA8A7005A0EAE /* AssembleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE31E9296DA8A7005A0EAE /* AssembleBuilder.swift */; };
 		41EE31EC296DE4E2005A0EAE /* InfoMoviePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE31EB296DE4E2005A0EAE /* InfoMoviePresenter.swift */; };
 		41EE31F0296E04EA005A0EAE /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE31EF296E04EA005A0EAE /* MainRouter.swift */; };
 /* End PBXBuildFile section */
@@ -55,7 +55,7 @@
 		417606D2296C8B4F004665E9 /* PhotoLoadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLoadService.swift; sourceTree = "<group>"; };
 		417606D6296C9466004665E9 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		417606D9296C9E73004665E9 /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
-		41EE31E9296DA8A7005A0EAE /* AssembleBulder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssembleBulder.swift; sourceTree = "<group>"; };
+		41EE31E9296DA8A7005A0EAE /* AssembleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssembleBuilder.swift; sourceTree = "<group>"; };
 		41EE31EB296DE4E2005A0EAE /* InfoMoviePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMoviePresenter.swift; sourceTree = "<group>"; };
 		41EE31EF296E04EA005A0EAE /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -184,7 +184,7 @@
 		417606DB296D46DB004665E9 /* Builder */ = {
 			isa = PBXGroup;
 			children = (
-				41EE31E9296DA8A7005A0EAE /* AssembleBulder.swift */,
+				41EE31E9296DA8A7005A0EAE /* AssembleBuilder.swift */,
 			);
 			path = Builder;
 			sourceTree = "<group>";
@@ -337,7 +337,7 @@
 			files = (
 				41115349290A9BE100ED22EA /* MovieViewCell.swift in Sources */,
 				41115346290A9B1000ED22EA /* InfoMovieViewController.swift in Sources */,
-				41EE31EA296DA8A7005A0EAE /* AssembleBulder.swift in Sources */,
+				41EE31EA296DA8A7005A0EAE /* AssembleBuilder.swift in Sources */,
 				417606D7296C9466004665E9 /* UIView+Extension.swift in Sources */,
 				4111532F29080EC400ED22EA /* MovieViewController.swift in Sources */,
 				41115354290AD69600ED22EA /* Actor.swift in Sources */,

@@ -3,11 +3,11 @@
 
 import UIKit
 
-/// Страница выбранного фильма
+/// Страница с информацией о выбранном фильме
 final class InfoMovieViewController: UIViewController {
-    // MARK: - Private Constant
+    // MARK: - Private Constants
 
-    private enum Constant {
+    private enum Constants {
         static let cellIdentifier = "cell"
         static let errorDataTaskString = "DataTask error: "
         static let emptyDataString = "Empty Data"
@@ -19,28 +19,7 @@ final class InfoMovieViewController: UIViewController {
         static let watchString = "Смотреть"
     }
 
-    // MARK: - Visual Components
-
-    let descpriptionTextView: UITextView = {
-        let text = UITextView()
-        text.font = .systemFont(ofSize: 22)
-        text.backgroundColor = .none
-        text.textColor = .black
-        text.textAlignment = .center
-        text.showsVerticalScrollIndicator = false
-        text.translatesAutoresizingMaskIntoConstraints = false
-        return text
-    }()
-
-    let nameFilmLabel: UILabel = {
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 25)
-        label.textColor = .black
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    // MARK: - Privat Visual Components
 
     private let imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -63,7 +42,7 @@ final class InfoMovieViewController: UIViewController {
 
     private let goToWebButton: UIButton = {
         let button = UIButton()
-        button.setTitle(Constant.watchString, for: .normal)
+        button.setTitle(Constants.watchString, for: .normal)
         button.layer.cornerRadius = 10
         button.backgroundColor = .systemPurple
         button.setTitleColor(UIColor.black, for: .normal)
@@ -72,6 +51,29 @@ final class InfoMovieViewController: UIViewController {
         button.layer.borderColor = UIColor.purple.cgColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+
+    // MARK: - Public Visual Components
+
+    let descpriptionTextView: UITextView = {
+        let text = UITextView()
+        text.font = .systemFont(ofSize: 22)
+        text.backgroundColor = .none
+        text.textColor = .black
+        text.textAlignment = .center
+        text.showsVerticalScrollIndicator = false
+        text.translatesAutoresizingMaskIntoConstraints = false
+        return text
+    }()
+
+    let nameFilmLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 25)
+        label.textColor = .black
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
 
     // MARK: - Private Properties
@@ -97,13 +99,13 @@ final class InfoMovieViewController: UIViewController {
         loadMoviesData()
     }
 
-    // MARK: - Public Method
+    // MARK: - Public Methods
 
     func createPresentImage() {
         presenter?.getImageDataFrom()
     }
 
-    // MARK: - Private Method
+    // MARK: - Private Methods
 
     private func action() {
         goToWebButton.addTarget(self, action: #selector(goToWebButtonAction(sender:)), for: .touchUpInside)
@@ -126,7 +128,7 @@ final class InfoMovieViewController: UIViewController {
 
     private func createBackground() {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: Constant.baseImageName)
+        backgroundImage.image = UIImage(named: Constants.baseImageName)
         backgroundImage.contentMode = .scaleAspectFill
         view.insertSubview(backgroundImage, at: 0)
     }
@@ -137,7 +139,7 @@ final class InfoMovieViewController: UIViewController {
 
     private func createNavController() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: Constant.starImageName),
+            image: UIImage(systemName: Constants.starImageName),
             style: .done,
             target: self,
             action: nil
@@ -149,7 +151,7 @@ final class InfoMovieViewController: UIViewController {
     private func createCollectionView() {
         imageCollectionView.register(
             InfoMovieCell.self,
-            forCellWithReuseIdentifier: Constant.cellIdentifier
+            forCellWithReuseIdentifier: Constants.cellIdentifier
         )
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
@@ -207,14 +209,14 @@ final class InfoMovieViewController: UIViewController {
         }
     }
 
-    @objc func goToWebButtonAction(sender: UIButton) {
+    @objc private func goToWebButtonAction(sender: UIButton) {
         let wkWebVC = WKWebViewController()
         wkWebVC.id = idNew
         navigationController?.pushViewController(wkWebVC, animated: true)
     }
 }
 
-// MARK: - Подписываемся на делегаты UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource
 
 extension InfoMovieViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -226,7 +228,7 @@ extension InfoMovieViewController: UICollectionViewDataSource {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: Constant.cellIdentifier,
+            withReuseIdentifier: Constants.cellIdentifier,
             for: indexPath
         ) as? InfoMovieCell else { return UICollectionViewCell() }
 
@@ -239,7 +241,7 @@ extension InfoMovieViewController: UICollectionViewDataSource {
     }
 }
 
-// MARK: - Подписываемся на делегаты UICollectionViewDelegateFlowLayout
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension InfoMovieViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
