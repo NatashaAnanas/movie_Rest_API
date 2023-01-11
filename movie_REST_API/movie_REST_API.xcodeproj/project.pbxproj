@@ -20,7 +20,6 @@
 		41115354290AD69600ED22EA /* ActorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41115353290AD69600ED22EA /* ActorData.swift */; };
 		41115358290ADDFC00ED22EA /* InfoMovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41115357290ADDFC00ED22EA /* InfoMovieCell.swift */; };
 		41549B50290B37F000F8331A /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41549B4F290B37F000F8331A /* UIViewController+Extension.swift */; };
-		41549B52290B4C0300F8331A /* HomaPageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41549B51290B4C0300F8331A /* HomaPageData.swift */; };
 		4165DC1F296EC0DF00CB64F8 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4165DC1E296EC0DF00CB64F8 /* Movie.swift */; };
 		4165DC22296EC16200CB64F8 /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4165DC21296EC16200CB64F8 /* Actor.swift */; };
 		417606CB296C000B004665E9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 417606CA296C000B004665E9 /* Alamofire */; };
@@ -49,7 +48,6 @@
 		41115353290AD69600ED22EA /* ActorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorData.swift; sourceTree = "<group>"; };
 		41115357290ADDFC00ED22EA /* InfoMovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMovieCell.swift; sourceTree = "<group>"; };
 		41549B4F290B37F000F8331A /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
-		41549B51290B4C0300F8331A /* HomaPageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomaPageData.swift; sourceTree = "<group>"; };
 		4165DC1E296EC0DF00CB64F8 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		4165DC21296EC16200CB64F8 /* Actor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
 		417606D2296C8B4F004665E9 /* PhotoLoadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLoadService.swift; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 				4165DC1E296EC0DF00CB64F8 /* Movie.swift */,
 				41115353290AD69600ED22EA /* ActorData.swift */,
 				4165DC21296EC16200CB64F8 /* Actor.swift */,
-				41549B51290B4C0300F8331A /* HomaPageData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -260,6 +257,7 @@
 			packageReferences = (
 				417606C9296C000B004665E9 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				417606CC296C2BD2004665E9 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				4165DC23296F5D3C00CB64F8 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 4111532829080EC400ED22EA /* Products */;
 			projectDirPath = "";
@@ -338,7 +336,6 @@
 				4111534F290A9D2C00ED22EA /* NetworkService.swift in Sources */,
 				4111532B29080EC400ED22EA /* AppDelegate.swift in Sources */,
 				41549B50290B37F000F8331A /* UIViewController+Extension.swift in Sources */,
-				41549B52290B4C0300F8331A /* HomaPageData.swift in Sources */,
 				417606D3296C8B4F004665E9 /* PhotoLoadService.swift in Sources */,
 				41115358290ADDFC00ED22EA /* InfoMovieCell.swift in Sources */,
 				41EE31EC296DE4E2005A0EAE /* InfoMoviePresenter.swift in Sources */,
@@ -563,6 +560,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4165DC23296F5D3C00CB64F8 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		417606C9296C000B004665E9 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";

@@ -59,11 +59,6 @@ final class NetworkService: NetworkServiceProtocol {
         }
     }
 
-//
-//    func fetchHomePageData(moviesURL: String, completion: @escaping (Result<HomaPageData?, Error>) -> ()) {
-//        fetchData(url: moviesURL, completion: completion)
-//    }
-
     func fetchImage(imageUrl: String, completion: @escaping (Result<Data?, Error>) -> ()) {
         fetchData(url: imageUrl, completion: completion)
     }

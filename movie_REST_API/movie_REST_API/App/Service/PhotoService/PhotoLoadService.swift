@@ -4,6 +4,7 @@
 import Alamofire
 import Foundation
 
+/// Протокол сервиса загрузки фотографий
 protocol PhotoLoadServiceProtocol {
     func fetchImage(imageUrl: String, completion: @escaping (Result<Data, Error>) -> ())
 }
