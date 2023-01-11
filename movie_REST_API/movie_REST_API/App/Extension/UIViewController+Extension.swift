@@ -1,9 +1,5 @@
-//
-//  UIViewController+Extension.swift
-//  movie_REST_API
-//
-//  Created by Анастасия Козлова on 28.10.2022.
-//
+// UIViewController+Extension.swift
+// Copyright © RoadMap. All rights reserved.
 
 import UIKit
 
