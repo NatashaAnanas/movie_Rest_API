@@ -24,7 +24,7 @@ final class ActorView {
         guard let idMovie = id else { return }
         let urlActor = "\(Constant.firstPartURLString)\(String(idMovie))\(Constant.secondPartURLString)"
 
-        networkService.getActorData(actorURL: urlActor) { [weak self] result in
+        networkService.fetchActorData(actorURL: urlActor) { [weak self] result in
             switch result {
             case let .success(actors):
                 self?.actors = actors

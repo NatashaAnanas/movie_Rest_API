@@ -51,7 +51,7 @@ final class WKWebViewController: UIViewController, WKNavigationDelegate {
 
         let urlPage = Constants.firstPartURLString + String(idMovie) + Constants.secondPartURLString
         urlString = urlPage
-        networkService.getHomePageData(moviesURL: urlPage) { [weak self] result in
+        networkService.fetchHomePageData(moviesURL: urlPage) { [weak self] result in
 
             switch result {
             case let .success(listOf):

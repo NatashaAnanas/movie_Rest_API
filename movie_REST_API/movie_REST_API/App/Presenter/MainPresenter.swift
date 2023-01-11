@@ -46,7 +46,7 @@ final class MainPresenter: MainViewPresenterProtocol {
     // MARK: - Public Methods
 
     func fetchMoviesData() {
-        networkService?.getMoviesData(moviesURL: urlMovie) { [weak self] result in
+        networkService?.fetchMoviesData(moviesURL: urlMovie) { [weak self] result in
             switch result {
             case let .success(movies):
                 self?.movies = movies

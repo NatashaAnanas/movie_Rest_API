@@ -6,9 +6,9 @@ import Foundation
 import SwiftyJSON
 
 protocol NetworkServiceProtocol {
-    func getData<T: Decodable>(url: String, completion: @escaping (Result<T?, Error>) -> ())
-    func getDataSwiftyJSON(url: String, completion: @escaping (Result<JSON, Error>) -> ())
-    func getMoviesData(moviesURL: String, completion: @escaping (Result<[Movie], Error>) -> ())
+    func fetchData<T: Decodable>(url: String, completion: @escaping (Result<T?, Error>) -> ())
+    func fetchDataSwiftyJSON(url: String, completion: @escaping (Result<JSON, Error>) -> ())
+    func fetchMoviesData(moviesURL: String, completion: @escaping (Result<[Movie], Error>) -> ())
     func fetchImage(imageUrl: String, completion: @escaping (Result<Data?, Error>) -> ())
 }
 
@@ -32,8 +32,8 @@ final class NetworkService: NetworkServiceProtocol {
 
     // MARK: - Public Methods
 
-    func getMoviesData(moviesURL: String, completion: @escaping (Result<[Movie], Error>) -> ()) {
-        getDataSwiftyJSON(url: moviesURL) { result in
+    func fetchMoviesData(moviesURL: String, completion: @escaping (Result<[Movie], Error>) -> ()) {
+        fetchDataSwiftyJSON(url: moviesURL) { result in
             switch result {
             case let .success(json):
                 let movies = json[Constant.resultsString].arrayValue.map { Movie(json: $0) }
@@ -44,8 +44,8 @@ final class NetworkService: NetworkServiceProtocol {
         }
     }
 
-    func getActorData(actorURL: String, completion: @escaping (Result<[Actor], Error>) -> ()) {
-        getDataSwiftyJSON(url: actorURL) { result in
+    func fetchActorData(actorURL: String, completion: @escaping (Result<[Actor], Error>) -> ()) {
+        fetchDataSwiftyJSON(url: actorURL) { result in
             switch result {
             case let .success(json):
                 let actors = json[Constant.castString].arrayValue.map { Actor(json: $0) }
@@ -56,17 +56,17 @@ final class NetworkService: NetworkServiceProtocol {
         }
     }
 
-    func getHomePageData(moviesURL: String, completion: @escaping (Result<HomaPageData?, Error>) -> ()) {
-        getData(url: moviesURL, completion: completion)
+    func fetchHomePageData(moviesURL: String, completion: @escaping (Result<HomaPageData?, Error>) -> ()) {
+        fetchData(url: moviesURL, completion: completion)
     }
 
     func fetchImage(imageUrl: String, completion: @escaping (Result<Data?, Error>) -> ()) {
-        getData(url: imageUrl, completion: completion)
+        fetchData(url: imageUrl, completion: completion)
     }
 
     // MARK: - Private Methods
 
-    internal func getData<T: Decodable>(url: String, completion: @escaping (Result<T?, Error>) -> ()) {
+    internal func fetchData<T: Decodable>(url: String, completion: @escaping (Result<T?, Error>) -> ()) {
         AF.request(url).responseJSON { response in
             guard let data = response.data else { return }
             do {
@@ -78,7 +78,7 @@ final class NetworkService: NetworkServiceProtocol {
         }
     }
 
-    internal func getDataSwiftyJSON(url: String, completion: @escaping (Result<JSON, Error>) -> ()) {
+    internal func fetchDataSwiftyJSON(url: String, completion: @escaping (Result<JSON, Error>) -> ()) {
         AF.request(url).responseJSON { response in
             switch response.result {
             case let .success(result):

@@ -30,14 +30,14 @@ final class Router: RouterProtocol {
 
     func initialViewController() {
         if let navigationController = navigationController {
-            guard let movieVC = builder?.createMovieModule(router: self) else { return }
+            guard let movieVC = builder?.makeMovieModule(router: self) else { return }
             navigationController.viewControllers = [movieVC]
         }
     }
 
     func showCurrentMovieVC(movie: Movie) {
         if let navigationController = navigationController {
-            guard let infoMovieVC = builder?.createInfoMovieModule(router: self, movie: movie) else { return }
+            guard let infoMovieVC = builder?.makeInfoMovieModule(router: self, movie: movie) else { return }
             navigationController.pushViewController(infoMovieVC, animated: true)
         }
     }

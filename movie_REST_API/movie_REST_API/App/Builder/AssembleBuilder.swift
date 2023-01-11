@@ -4,8 +4,8 @@
 import UIKit
 
 protocol AssembleBuilderProtocol {
-    func createMovieModule(router: RouterProtocol) -> UIViewController
-    func createInfoMovieModule(router: RouterProtocol, movie: Movie) -> UIViewController
+    func makeMovieModule(router: RouterProtocol) -> UIViewController
+    func makeInfoMovieModule(router: RouterProtocol, movie: Movie) -> UIViewController
 }
 
 private enum Constants {
@@ -18,7 +18,7 @@ private enum Constants {
 final class AssembleBuilder: AssembleBuilderProtocol {
     // MARK: - Public Methods
 
-    func createMovieModule(router: RouterProtocol) -> UIViewController {
+    func makeMovieModule(router: RouterProtocol) -> UIViewController {
         let networkService = NetworkService()
         let view = MovieViewController()
         let presenter = MainPresenter(
@@ -31,7 +31,7 @@ final class AssembleBuilder: AssembleBuilderProtocol {
         return view
     }
 
-    func createInfoMovieModule(router: RouterProtocol, movie: Movie) -> UIViewController {
+    func makeInfoMovieModule(router: RouterProtocol, movie: Movie) -> UIViewController {
         let networkService = NetworkService()
         let photoLoadService = PhotoLoadService()
         let view = InfoMovieViewController()
