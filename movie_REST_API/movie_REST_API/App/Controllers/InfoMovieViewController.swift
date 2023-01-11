@@ -214,11 +214,9 @@ final class InfoMovieViewController: UIViewController {
     }
 }
 
-// MARK: - Подписываемся на делегаты UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+// MARK: - Подписываемся на делегаты UICollectionViewDataSource
 
-extension InfoMovieViewController: UICollectionViewDelegate,
-    UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
-{
+extension InfoMovieViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         actorView.numberOfRowsInSection(section: section)
     }
@@ -239,7 +237,11 @@ extension InfoMovieViewController: UICollectionViewDelegate,
 
         return cell
     }
+}
 
+// MARK: - Подписываемся на делегаты UICollectionViewDelegateFlowLayout
+
+extension InfoMovieViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -248,6 +250,8 @@ extension InfoMovieViewController: UICollectionViewDelegate,
         CGSize(width: 200, height: 280)
     }
 }
+
+// MARK: - Подписываемся на протокол InfoMovieViewProtocol
 
 extension InfoMovieViewController: InfoMovieViewProtocol {
     func succes(data: Data) {

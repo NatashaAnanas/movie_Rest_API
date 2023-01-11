@@ -20,6 +20,8 @@ protocol MainViewPresenterProtocol: AnyObject {
 
 /// Презентер главного экрана со списком фильмов
 class MainPresenter: MainViewPresenterProtocol {
+    // MARK: - Public Properties
+
     let networkService: NetworkServiceProtocol?
     var urlMovie: String
     var movies: [Movie]?

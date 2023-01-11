@@ -14,13 +14,19 @@ protocol RouterProtocol {
 
 /// Роутер
 class Router: RouterProtocol {
+    // MARK: - Public Properties
+
     var navigationController: UINavigationController?
     var builder: AssembleBulderProtocol?
+
+    // MARK: - Init
 
     init(navigationController: UINavigationController, builder: AssembleBulderProtocol) {
         self.navigationController = navigationController
         self.builder = builder
     }
+
+    // MARK: - Public Method
 
     func initialViewController() {
         if let navigationController = navigationController {

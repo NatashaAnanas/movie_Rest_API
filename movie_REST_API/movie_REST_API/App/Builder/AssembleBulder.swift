@@ -16,6 +16,8 @@ private enum Constants {
 
 /// AssembleBulder
 class AssembleBulder: AssembleBulderProtocol {
+    // MARK: - Public Method
+
     func createMovieModul(router: RouterProtocol) -> UIViewController {
         let networkService = NetworkService()
         let view = MovieViewController()

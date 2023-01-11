@@ -29,6 +29,8 @@ class InfoMoviePresenter: InfoMovieViewPresenterProtocol {
         static let emptyString = ""
     }
 
+    // MARK: - Public Properties
+
     let networkService: NetworkServiceProtocol?
     let photoLoadService: PhotoLoadServiceProtocol?
     var router: RouterProtocol
@@ -53,7 +55,8 @@ class InfoMoviePresenter: InfoMovieViewPresenterProtocol {
     // MARK: - Public Methods
 
     func getImageDataFrom() {
-        let url = Constant.firstPartURLString + (movies.presentImageURLString ?? Constant.emptyString)
+        guard let presentImageURLString = movies.presentImageURLString else { return }
+        let url = "\(Constant.firstPartURLString)\(presentImageURLString)"
         photoLoadService?.fetchImage(imageUrl: url, completion: { [weak self] result in
             switch result {
             case let .success(data):
